@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>windows read registers | qwertwwwe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#windows内核中注册表的打开、读/写操作
+参考链接：http://www.blogfshare.com/kernel-registerrw.html
+最近在写windows驱动时需要读取注册表的值，一下内容为windows内核中注册表操作；
+##1.注册表打开##windows系统的注册表是一个树状结构表，每一个表中是键值对，查找时先打开相应的表（子键），然后查询表中的值；和应用程序编程的一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows read registers">
+<meta property="og:url" content="http://qwertwwwe.github.io/2017/06/07/windows-read-registers/index.html">
+<meta property="og:site_name" content="qwertwwwe">
+<meta property="og:description" content="#windows内核中注册表的打开、读/写操作
+参考链接：http://www.blogfshare.com/kernel-registerrw.html
+最近在写windows驱动时需要读取注册表的值，一下内容为windows内核中注册表操作；
+##1.注册表打开##windows系统的注册表是一个树状结构表，每一个表中是键值对，查找时先打开相应的表（子键），然后查询表中的值；和应用程序编程的一">
+<meta property="og:updated_time" content="2017-06-07T16:28:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="windows read registers">
+<meta name="twitter:description" content="#windows内核中注册表的打开、读/写操作
+参考链接：http://www.blogfshare.com/kernel-registerrw.html
+最近在写windows驱动时需要读取注册表的值，一下内容为windows内核中注册表操作；
+##1.注册表打开##windows系统的注册表是一个树状结构表，每一个表中是键值对，查找时先打开相应的表（子键），然后查询表中的值；和应用程序编程的一">
+  
+    <link rel="alternate" href="/atom.xml" title="qwertwwwe" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">qwertwwwe</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://qwertwwwe.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-windows-read-registers" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/07/windows-read-registers/" class="article-date">
+  <time datetime="2017-06-07T15:13:27.000Z" itemprop="datePublished">2017-06-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      windows read registers
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#windows内核中注册表的打开、读/写操作</p>
+<p>参考链接：<a href="http://www.blogfshare.com/kernel-registerrw.html" target="_blank" rel="external">http://www.blogfshare.com/kernel-registerrw.html</a></p>
+<p>最近在写windows驱动时需要读取注册表的值，一下内容为windows内核中注册表操作；</p>
+<p>##1.注册表打开##<br>windows系统的注册表是一个树状结构表，每一个表中是<k,v>键值对，查找时先打开相应的表（子键），然后查询表中的<k, v="">值；<br>和应用程序编程的一点重大不同是这个路径的写法不一样。一般应用编程中需要提供一个根子键的句柄。而驱动中则全部用路径表示。相应的有一张表表示如下：</k,></k,v></p>
+<table>
+<thead>
+<tr>
+<th>应用程序中对应的子健</th>
+<th style="text-align:center">驱动编程中的路径写法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HKEY_LOCAL_MACHINE</td>
+<td style="text-align:center">\Registry\Machine</td>
+</tr>
+<tr>
+<td>HKEY_USERS</td>
+<td style="text-align:center">\Registry\User</td>
+</tr>
+<tr>
+<td>HKEY_CLASSES_ROOT</td>
+<td style="text-align:center">没有对应的路径</td>
+</tr>
+<tr>
+<td>HKEY_CURRENT_USER</td>
+<td style="text-align:center">没有简单的对应路径，但是可以求得</td>
+</tr>
+</tbody>
+</table>
+<p>实际上应用程序和驱动程序很大的一个不同在于应用程序总是由某个“当前用户”启动的。因此可以直接读取HKEY_CLASSES_ROOT和HKEY_CURRENT_USER。而驱动程序和用户无关，所以直接去打开HKEY_CURRENT_USER也就不符合逻辑了。</p>
+<p>打开注册表键使用函数ZwOpenKey。新建或者打开则使用ZwCreateKey。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function">NTSTATUS <span class="title">ZwOpenKey</span><span class="params">(</span></span></div><div class="line">  _Out_  PHANDLE KeyHandle,</div><div class="line">  _In_   ACCESS_MASK DesiredAccess,</div><div class="line">  _In_   POBJECT_ATTRIBUTES ObjectAttributes,</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>DesiredAccess支持一系列的组合权限。可以是下表中所有权限的任何组合：<br>KEY_QUERY_VALUE：读取键下的值。<br>KEY_SET_VALUE：设置键下的值。<br>KEY_CREATE_SUB_KEY：生成子键。<br>KEY_ENUMERATE_SUB_KEYS：枚举子键。<br>不过实际上可以用KEY_READ来做为通用的读权限组合。这是一个组合宏。此外对应的有KEY_WRITE。如果需要获得全部的权限，可以使用KEY_ALL_ACCESS。</p>
+<p>下面是一个例子。它读取注册表中保存的Machine GUID值。</p>
+<p>Machine GUID是一台计算机的标识符，这一值保存在注册表中，路径是“\Registry\Machine\SOFTWARE\Microsoft\Cryptography”。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">NTSTATUS status = STATUS_SUCCESS;</div><div class="line">HANDLE my_key_handle = <span class="literal">NULL</span>;</div><div class="line"></div><div class="line"><span class="comment">// 定义要获取的路径</span></div><div class="line">UNICODE_STRING machine_guid_path =</div><div class="line">    RTL_CONSTANT_STRING(</div><div class="line">    L”\\Registry\\Machine\\SOFTWARE\\Microsoft\\Cryptography”);</div><div class="line">OBJECT_ATTRIBUTE my_obj_attr = &#123; <span class="number">0</span> &#125;;</div><div class="line"></div><div class="line"><span class="comment">// 初始化OBJECT_ATTRIBUTE</span></div><div class="line">InitializeObjectAttributes(</div><div class="line">        &amp;my_obj_attr,</div><div class="line">        &amp;machine_guid_path,</div><div class="line">        OBJ_CASE_INSENSITIVE,</div><div class="line">        <span class="literal">NULL</span>,</div><div class="line">        <span class="literal">NULL</span>);</div><div class="line"><span class="comment">// 接下来是打开Key</span></div><div class="line">status = ZwOpenKey(&amp;my_key_handle,KEY_READ,&amp;my_obj_attr);</div><div class="line"><span class="keyword">if</span>(!NT_SUCCESS(status))</div><div class="line">&#123;</div><div class="line">    <span class="comment">// 失败处理</span></div><div class="line">    ……</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>##2注册表读##</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function">NTSTATUS <span class="title">ZwQueryValueKey</span><span class="params">(</span></span></div><div class="line">  _In_       HANDLE KeyHandle,</div><div class="line">  _In_       PUNICODE_STRING ValueName,</div><div class="line">  _In_       KEY_VALUE_INFORMATION_CLASS KeyValueInformationClass,</div><div class="line">  _Out_opt_  PVOID KeyValueInformation,</div><div class="line">  _In_       ULONG Length,</div><div class="line">  _Out_      PULONG ResultLength</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>KeyHandle：这是用ZwCreateKey或者ZwOpenKey所打开的一个注册表键句柄。<br>ValueName：要读取的值的名字。<br>KeyValueInformationClass：本次查询所需要查询的信息类型。这有如下的三种可能。<br>①KeyValueBasicInformation：获得基础信息，包含值名和类型。<br>②KeyValueFullInformation：获得完整信息。包含值名、类型和值的数据。<br>③KeyValuePartialInformation：获得局部信息。包含类型和值数据。</p>
+<p>当采用KeyValuePartialInformation的时候，一个类型为KEY_VALUE_PARTIAL_INFORMATION的结构将被返回到参数KeyValueInformation所指向的内存中。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> _KEY_VALUE_PARTIAL_INFORMATION &#123;</div><div class="line">  ULONG TitleIndex;</div><div class="line">  ULONG Type;</div><div class="line">  ULONG DataLength;</div><div class="line">  UCHAR Data[<span class="number">1</span>];</div><div class="line">&#125; KEY_VALUE_PARTIAL_INFORMATION, *PKEY_VALUE_PARTIAL_INFORMATION;</div></pre></td></tr></table></figure>
+<p>上面的数据类型Type有很多种可能：</p>
+<p>①REG_BINARY：十六进制数据。<br>②REG_DWORD：四字节整数。<br>③REG_SZ：以空结束的Unicode字符串。</p>
+<p>Length：用户传入的输出空间KeyValueInformation的长度。<br>ResultLength：返回实际需要的长度。<br>返回值：如果说实际需要的长度比Length要大，那么返回STATUS_BUFFER_OVERFLOW或者是STATUS_BUFFER_TOO_SMALL。如果成功读出了全部数据，那么返回STATUS_SUCCESS。其他的情况，返回一个错误码。</p>
+<p>我们再来完成上面的程序：(<font color="red">先获取长度，然后不足时再动态分配内存进行读取</font>)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">// 要读取的值的名字</div><div class="line">UNICODE_STRING machine_guid_key_name = RTL_CONSTANT_STRING(L”MachineGuid”);</div><div class="line">// 用来试探大小的key_infor</div><div class="line">KEY_VALUE_PARTIAL_INFORMATION key_infor;</div><div class="line">// 最后实际用到的key_infor指针。内存分配在堆中</div><div class="line">PKEY_VALUE_PARTIAL_INFORMATION ac_key_infor;</div><div class="line">ULONG ac_length;</div><div class="line"></div><div class="line">// 用于最后存储为char类型的变量</div><div class="line">char machine_guid[100] = "init";</div><div class="line">ULONG valueSize;</div><div class="line">……</div><div class="line"></div><div class="line">// 前面已经打开了句柄my_key，下面如此来读取值：</div><div class="line">status = ZwQueryValueKey(my_key_handle, &amp;machine_guid_key_name, KeyValuePartialInformation,</div><div class="line">							&amp;key_infor, sizeof(KEY_VALUE_PARTIAL_INFORMATION), &amp;ac_length);</div><div class="line">if(!NT_SUCCESS(status) &amp;&amp; status != STATUS_BUFFER_OVERFLOW &amp;&amp; status != STATUS_BUFFER_TOO_SMALL)</div><div class="line">&#123;</div><div class="line">    // 错误处理</div><div class="line">    …</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 如果没失败，那么分配足够的空间，再次读取</div><div class="line">ac_key_infor = (PKEY_VALUE_PARTIAL_INFORMATION)</div><div class="line">ExAllocatePoolWithTag(NonpagedPool,ac_length ,'tag1');</div><div class="line">if(ac_key_infor == NULL)</div><div class="line">&#123;</div><div class="line">    stauts = STATUS_INSUFFICIENT_RESOURCES;</div><div class="line">    // 错误处理</div><div class="line">    …</div><div class="line">&#125;</div><div class="line"></div><div class="line">status = ZwQueryValueKey(my_key_handle, &amp;machine_guid_key_name, </div><div class="line">                        KeyValuePartialInformation,</div><div class="line">                        ac_key_infor, ac_length, &amp;ac_length);</div><div class="line">// 到此为止，如果status为STATUS_SUCCESS,则要读取的数据已经</div><div class="line">// 在ac_key_infor-&gt;Data中，其中存储的是UNICODE，长度存储</div><div class="line">// 在ac_key_infor-&gt; DataLength中。</div><div class="line"></div><div class="line">// 由于我需要的是char类型的，所以将其转换成char字符串</div><div class="line">ac_key_infor-&gt;Data[ac_key_infor-&gt;DataLength / sizeof(ac_key_infor-&gt;Data[0])] = UNICODE_NULL;</div><div class="line">status = RtlUnicodeToMultiByteN(machine_guid, sizeof(machine_guid) - 1, &amp;valueSize, </div><div class="line">					ac_key_infor-&gt;Data, ac_key_infor-&gt;DataLength);</div><div class="line">if (!NT_SUCCESS(status)) &#123;</div><div class="line">    // 错误处理</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line">machine_guid[valueSize] = '\0';</div></pre></td></tr></table></figure>
+<p>##3.注册表的写##<br>（暂时没这个需求，没测）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function">NTSTATUS <span class="title">ZwSetValueKey</span><span class="params">(</span></span></div><div class="line">  _In_      HANDLE KeyHandle,</div><div class="line">  _In_      PUNICODE_STRING ValueName,</div><div class="line">  _In_opt_  ULONG TitleIndex,</div><div class="line">  _In_      ULONG Type,</div><div class="line">  _In_opt_  PVOID Data,</div><div class="line">  _In_      ULONG DataSize</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>TileIndex参数请始终填入0。KeyHandle、ValueName、Type这三个参数和ZwQueryValueKey中对应的参数相同。不同的是Data和DataSize。Data是要写入的数据的开始地址，而DataSize是要写入的数据的长度。</p>
+<p>如果该Value已经存在，那么其值会被这次写入覆盖。如果不存在，则会新建一个。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">UNICODE_STRING name = RTL_CONSTANT_STRING(L”Test”);</div><div class="line">PWCHAR value = &#123; L”My Test Value” &#125;;</div><div class="line">…</div><div class="line"><span class="comment">// 写入数据。数据长度之所以要将字符串长度加上1，是为了把最后一个空结束符写入。</span></div><div class="line">status = ZwSetValueKey(my_key_handle,</div><div class="line">&amp;name,<span class="number">0</span>,REG_SZ,value,(wcslen(value)+<span class="number">1</span>)*<span class="keyword">sizeof</span>(WCHAR));</div><div class="line"><span class="keyword">if</span>(!NT_SUCCESS(status))</div><div class="line">&#123;</div><div class="line"><span class="comment">// 错误处理</span></div><div class="line">……</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://qwertwwwe.github.io/2017/06/07/windows-read-registers/" data-id="cj3n7kzv6000294nhu9g0zp94" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/04/22/PoDoFo-0-9-5-allows-remote-attackers-to-cause-a-denial-of-service-infinit-loop/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">PoDoFo 0.9.5 allows remote attackers to cause a denial of service(infinite loop)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/06/07/windows-read-registers/">windows read registers</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/22/PoDoFo-0-9-5-allows-remote-attackers-to-cause-a-denial-of-service-infinit-loop/">PoDoFo 0.9.5 allows remote attackers to cause a denial of service(infinite loop)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/22/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/18/general-shellcode/">General shellcode</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 rg<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
