@@ -1,0 +1,719 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux, network," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="最近搭一个框架需要用到iptables做映射，学习了下iptables的原理，总结下方便以后查~。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux iptables 详解">
+<meta property="og:url" content="http://qwertwwwe.github.io/2017/07/12/Linux-iptables-详解/index.html">
+<meta property="og:site_name" content="qwertwwwe">
+<meta property="og:description" content="最近搭一个框架需要用到iptables做映射，学习了下iptables的原理，总结下方便以后查~。">
+<meta property="og:image" content="http://qwertwwwe.github.io/imaegs/Linux-iptables-详解/iptables_tables.png">
+<meta property="og:image" content="http://qwertwwwe.github.io/imaegs/Linux-iptables-详解/iptables_process.png">
+<meta property="og:updated_time" content="2017-07-12T16:46:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux iptables 详解">
+<meta name="twitter:description" content="最近搭一个框架需要用到iptables做映射，学习了下iptables的原理，总结下方便以后查~。">
+<meta name="twitter:image" content="http://qwertwwwe.github.io/imaegs/Linux-iptables-详解/iptables_tables.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://qwertwwwe.github.io/2017/07/12/Linux-iptables-详解/"/>
+
+
+
+
+
+  <title>Linux iptables 详解 | qwertwwwe</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?bcbaa984b5bd501cef6054c7b2172803";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">qwertwwwe</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://qwertwwwe.github.io/2017/07/12/Linux-iptables-详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="rg">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/meiqiu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qwertwwwe">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux iptables 详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-12T23:40:08+08:00">
+                2017-07-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近搭一个框架需要用到iptables做映射，学习了下iptables的原理，总结下方便以后查~。<br><a id="more"></a></p>
+<p>参考链接：<br><a href="http://www.cnblogs.com/metoy/p/4320813.html" target="_blank" rel="external">http://www.cnblogs.com/metoy/p/4320813.html</a><br><a href="http://www.ha97.com/4093.html" target="_blank" rel="external">http://www.ha97.com/4093.html</a></p>
+<h1 id="一、iptables介绍"><a href="#一、iptables介绍" class="headerlink" title="一、iptables介绍"></a>一、iptables介绍</h1><p>iptables是Linux中对网络数据包进行处理的一个功能组件，就相当于防火墙，可以对经过的数据包进行处理，例如：数据包过滤、数据包转发等等，一般例如Ubuntu等Linux系统是默认自带启动的。</p>
+<h1 id="二、iptables结构"><a href="#二、iptables结构" class="headerlink" title="二、iptables结构"></a>二、iptables结构</h1><p>iptables其实是一堆规则，防火墙根据iptables里的规则，对收到的网络数据包进行处理。iptables里的数据组织结构分为：表、链、规则。</p>
+<p>##表（tables）##<br>表提供特定的功能，iptables里面有4个表： filter表、nat表、mangle表和raw表，分别用于实现包过滤、网络地址转换、包重构和数据追踪处理。<br>每个表里包含多个链。</p>
+<h2 id="链（chains）"><a href="#链（chains）" class="headerlink" title="链（chains）"></a>链（chains）</h2><p>链（chains）是数据包传播的路径，每一条链其实就是众多规则中的一个检查清单，每一条链中可以有一 条或数条规则。当一个数据包到达一个链时，iptables就会从链中第一条规则开始检查，看该数据包是否满足规则所定义的条件。如果满足，系统就会根据 该条规则所定义的方法处理该数据包；否则iptables将继续检查下一条规则，如果该数据包不符合链中任一条规则，iptables就会根据该链预先定 义的默认策略来处理数据包。</p>
+<p>其整体结构如下图所示:<br><img src="imaegs/Linux-iptables-详解/iptables_tables.png" alt=""></p>
+<h2 id="表链结构"><a href="#表链结构" class="headerlink" title="表链结构"></a>表链结构</h2><p>1.filter表——三个链：INPUT、FORWARD、OUTPUT<br>作用：过滤数据包  内核模块：iptables_filter.</p>
+<p>2.Nat表——三个链：PREROUTING、POSTROUTING、OUTPUT<br>作用：用于网络地址转换（IP、端口） 内核模块：iptable_nat</p>
+<p>3.Mangle表——五个链：PREROUTING、POSTROUTING、INPUT、OUTPUT、FORWARD<br>作用：修改数据包的服务类型、TTL、并且可以配置路由实现QOS内核模块</p>
+<p>4.Raw表——两个链：OUTPUT、PREROUTING<br>作用：决定数据包是否被状态跟踪机制处理</p>
+<h2 id="数据包流向"><a href="#数据包流向" class="headerlink" title="数据包流向"></a>数据包流向</h2><p>前面介绍了iptables的组织结构，下面一张图介绍了一个数据包如何依次穿过iptables的各个链和表的。<br><img src="imaegs/Linux-iptables-详解/iptables_process.png" alt=""></p>
+<p>基本步骤如下：</p>
+<ol>
+<li>数据包到达网络接口，比如 eth0。</li>
+<li>进入 raw 表的 PREROUTING 链，这个链的作用是赶在连接跟踪之前处理数据包。</li>
+<li>如果进行了连接跟踪，在此处理。</li>
+<li>进入 mangle 表的 PREROUTING 链，在此可以修改数据包，比如 TOS 等。</li>
+<li>进入 nat 表的 PREROUTING 链，可以在此做DNAT，但不要做过滤。</li>
+<li>决定路由，看是交给本地主机还是转发给其它主机。</li>
+</ol>
+<p>后面将分为2种情况：</p>
+<ol>
+<li>数据包发送给本地主机，交由本地主机上层应用处理；</li>
+<li>将数据包转发给其他主机来处理。</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux-network/" rel="tag"># Linux, network</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/07/windows-read-registers/" rel="next" title="windows read registers">
+                <i class="fa fa-chevron-left"></i> windows read registers
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/meiqiu.jpg"
+               alt="rg" />
+          <p class="site-author-name" itemprop="name">rg</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、iptables介绍"><span class="nav-number">1.</span> <span class="nav-text">一、iptables介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、iptables结构"><span class="nav-number">2.</span> <span class="nav-text">二、iptables结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#链（chains）"><span class="nav-number">2.1.</span> <span class="nav-text">链（chains）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表链结构"><span class="nav-number">2.2.</span> <span class="nav-text">表链结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据包流向"><span class="nav-number">2.3.</span> <span class="nav-text">数据包流向</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rg</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
