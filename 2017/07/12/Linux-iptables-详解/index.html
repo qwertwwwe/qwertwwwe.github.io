@@ -103,14 +103,14 @@
 <meta property="og:url" content="https://qwertwwwe.github.io/2017/07/12/Linux-iptables-详解/index.html">
 <meta property="og:site_name" content="qwertwwwe">
 <meta property="og:description" content="最近搭一个框架需要用到iptables做映射，学习了下iptables的原理，总结下方便以后查~。">
-<meta property="og:image" content="https://qwertwwwe.github.io/images/Linux-iptables-详解/iptables_tables.png">
-<meta property="og:image" content="https://qwertwwwe.github.io/images/Linux-iptables-详解/iptables_process.png">
-<meta property="og:image" content="https://qwertwwwe.github.io/images/Linux-iptables-详解/iptables_cmd.jpg">
-<meta property="og:updated_time" content="2017-07-25T15:44:20.000Z">
+<meta property="og:image" content="https://qwertwwwe.github.io/2017/07/12/Linux-iptables-详解/images/Linux-iptables-详解/iptables_tables.png">
+<meta property="og:image" content="https://qwertwwwe.github.io/2017/07/12/Linux-iptables-详解/images/Linux-iptables-详解/iptables_process.png">
+<meta property="og:image" content="https://qwertwwwe.github.io/2017/07/12/Linux-iptables-详解/images/Linux-iptables-详解/iptables_cmd.jpg">
+<meta property="og:updated_time" content="2017-07-25T15:46:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux iptables 详解">
 <meta name="twitter:description" content="最近搭一个框架需要用到iptables做映射，学习了下iptables的原理，总结下方便以后查~。">
-<meta name="twitter:image" content="https://qwertwwwe.github.io/images/Linux-iptables-详解/iptables_tables.png">
+<meta name="twitter:image" content="https://qwertwwwe.github.io/2017/07/12/Linux-iptables-详解/images/Linux-iptables-详解/iptables_tables.png">
 
 
 
@@ -353,12 +353,12 @@
 <h1 id="二、iptables结构"><a href="#二、iptables结构" class="headerlink" title="二、iptables结构"></a>二、iptables结构</h1><p>iptables其实是一堆规则，防火墙根据iptables里的规则，对收到的网络数据包进行处理。iptables里的数据组织结构分为：表、链、规则。</p>
 <h2 id="表（tables）"><a href="#表（tables）" class="headerlink" title="表（tables）"></a>表（tables）</h2><p>表提供特定的功能，iptables里面有4个表： filter表、nat表、mangle表和raw表，分别用于实现包过滤、网络地址转换、包重构和数据追踪处理。<br>每个表里包含多个链。</p>
 <h2 id="链（chains）"><a href="#链（chains）" class="headerlink" title="链（chains）"></a>链（chains）</h2><p>链（chains）是数据包传播的路径，每一条链其实就是众多规则中的一个检查清单，每一条链中可以有一 条或数条规则。当一个数据包到达一个链时，iptables就会从链中第一条规则开始检查，看该数据包是否满足规则所定义的条件。如果满足，系统就会根据 该条规则所定义的方法处理该数据包；否则iptables将继续检查下一条规则，如果该数据包不符合链中任一条规则，iptables就会根据该链预先定 义的默认策略来处理数据包。</p>
-<p>其整体结构如下图所示:<br><img src="images/Linux-iptables-详解/iptables_tables.png" alt=""></p>
+<p>其整体结构如下图所示:<br><img src="/2017/07/12/Linux-iptables-详解/images/Linux-iptables-详解/iptables_tables.png" alt=""></p>
 <h2 id="表链结构"><a href="#表链结构" class="headerlink" title="表链结构"></a>表链结构</h2><p>1.filter表——三个链：INPUT、FORWARD、OUTPUT<br>作用：过滤数据包  内核模块：iptables_filter.</p>
 <p>2.Nat表——三个链：PREROUTING、POSTROUTING、OUTPUT<br>作用：用于网络地址转换（IP、端口） 内核模块：iptable_nat</p>
 <p>3.Mangle表——五个链：PREROUTING、POSTROUTING、INPUT、OUTPUT、FORWARD<br>作用：修改数据包的服务类型、TTL、并且可以配置路由实现QOS内核模块</p>
 <p>4.Raw表——两个链：OUTPUT、PREROUTING<br>作用：决定数据包是否被状态跟踪机制处理</p>
-<h2 id="数据包流向"><a href="#数据包流向" class="headerlink" title="数据包流向"></a>数据包流向</h2><p>前面介绍了iptables的组织结构，下面一张图介绍了一个数据包如何依次穿过iptables的各个链和表的。<br><img src="images/Linux-iptables-详解/iptables_process.png" alt=""></p>
+<h2 id="数据包流向"><a href="#数据包流向" class="headerlink" title="数据包流向"></a>数据包流向</h2><p>前面介绍了iptables的组织结构，下面一张图介绍了一个数据包如何依次穿过iptables的各个链和表的。<br><img src="/2017/07/12/Linux-iptables-详解/images/Linux-iptables-详解/iptables_process.png" alt=""></p>
 <p>基本步骤如下：</p>
 <ol>
 <li>数据包到达网络接口，比如 eth0。</li>
@@ -397,7 +397,7 @@
 <li>进入 nat 表的 POSTROUTING 链，同上一种情况的第10步。</li>
 <li>进入出去的网络接口。完毕</li>
 </ol>
-<h1 id="三、iptables操作"><a href="#三、iptables操作" class="headerlink" title="三、iptables操作"></a>三、iptables操作</h1><p>参考：<a href="http://www.cnblogs.com/metoy/p/4320813.html" target="_blank" rel="external">http://www.cnblogs.com/metoy/p/4320813.html</a><br>iptables的指令图示如下：<br><img src="images/Linux-iptables-详解/iptables_cmd.jpg" alt=""></p>
+<h1 id="三、iptables操作"><a href="#三、iptables操作" class="headerlink" title="三、iptables操作"></a>三、iptables操作</h1><p>参考：<a href="http://www.cnblogs.com/metoy/p/4320813.html" target="_blank" rel="external">http://www.cnblogs.com/metoy/p/4320813.html</a><br>iptables的指令图示如下：<br><img src="/2017/07/12/Linux-iptables-详解/images/Linux-iptables-详解/iptables_cmd.jpg" alt=""></p>
 <p>如果使用开机转发，需要设置参数：<br>echo 1 &gt; /proc/sys/net/ipv4/ip_forward</p>
 <p>如果想开机自动设置，配置一下文件：<br>/etc/sysctl.conf文件中的 net.ipv4.ip_forward = 1</p>
 <h3 id="iptables的基本语法格式"><a href="#iptables的基本语法格式" class="headerlink" title="iptables的基本语法格式"></a>iptables的基本语法格式</h3><p>iptables [-t 表名] 命令选项 ［链名］ ［条件匹配］ ［-j 目标动作或跳转<br>说明：表名、链名用于指定 iptables命令所操作的表和链，命令选项用于指定管理iptables规则的方式（比如：插入、增加、删除、查看等；条件匹配用于指定对符合什么样 条件的数据包进行处理；目标动作或跳转用于指定数据包的处理方式（比如允许通过、拒绝、丢弃、跳转（Jump）给其它链处理。</p>
@@ -435,8 +435,7 @@
 <p>我要用到的是将本地qemu仿真的一个虚拟机中的IP:PORT给映射到主机的端口上来对外服务：</p>
 <p>qemu仿真系统IP为192.168.0.1，仿真系统与主机的桥接的网卡上，主机的ip为192.168.0.2，主机对外ip为172.18.236.82，将虚拟机中的80端口映射到主机的8080端口：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo iptables -t nat -A PREROUTING <span class="_">-d</span> 172.18.236.82 -p tcp --dport 8081 -j DNAT --to-destination 192.168.0.1:80</div><div class="line">sudo iptables -t nat -A POSTROUTING <span class="_">-d</span> 192.168.0.1 -p tcp --dport 80 -j SNAT --to 192.168.0.2</div></pre></td></tr></table></figure>
-<h1 id="四、python对iptables的操作包"><a href="#四、python对iptables的操作包" class="headerlink" title="四、python对iptables的操作包"></a>四、python对iptables的操作包</h1><p>python中有对iptables的操作包: iptc</p>
-<p>参考主页：<br><a href="https://github.com/ldx/python-iptables" target="_blank" rel="external">https://github.com/ldx/python-iptables</a></p>
+<h1 id="四、python对iptables的操作包"><a href="#四、python对iptables的操作包" class="headerlink" title="四、python对iptables的操作包"></a>四、python对iptables的操作包</h1><p>python中有对iptables的操作包: iptc<br>参考主页：<br><a href="https://github.com/ldx/python-iptables" target="_blank" rel="external">https://github.com/ldx/python-iptables</a></p>
 <p>Linux上安装：<br>针对python的：<br>pip install –upgrade python-iptables<br>针对python3的：<br>pip3 install –upgrade python-iptables</p>
 <p>在python文件中导入：<br>import iptc</p>
 <p>官网里面有对该包的介绍和很多例子，但没有一个所有指令的完整归纳，有些指令参数不知道在iptc包中用什么，后面总结了在加在这~</p>
