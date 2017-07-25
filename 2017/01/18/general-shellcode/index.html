@@ -97,29 +97,20 @@
 
 
 
-<meta name="description" content="windows xp上的通用shellcode0day书上3.4节的通用shellcode开发实验：
-开发环境windows xp sp3visual C++ 6.0
-shellcode适用环境windows xp sp3及之前版本，windows 7稍微改动亦可
-1.获取3个函数名hash后的值通过将字符串进行hash计算，得到一个更短的字符串，从而简化shellcode中字符串对比的代码。ha">
+<meta name="description" content="windows xp上的通用shellcode0day书上3.4节的通用shellcode开发实验：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="General shellcode">
 <meta property="og:url" content="https://qwertwwwe.github.io/2017/01/18/general-shellcode/index.html">
 <meta property="og:site_name" content="qwertwwwe">
-<meta property="og:description" content="windows xp上的通用shellcode0day书上3.4节的通用shellcode开发实验：
-开发环境windows xp sp3visual C++ 6.0
-shellcode适用环境windows xp sp3及之前版本，windows 7稍微改动亦可
-1.获取3个函数名hash后的值通过将字符串进行hash计算，得到一个更短的字符串，从而简化shellcode中字符串对比的代码。ha">
+<meta property="og:description" content="windows xp上的通用shellcode0day书上3.4节的通用shellcode开发实验：">
 <meta property="og:image" content="https://qwertwwwe.github.io/images/general-shellcode/shellcode_stack1.png">
 <meta property="og:image" content="https://qwertwwwe.github.io/images/general-shellcode/kernel32.png">
 <meta property="og:image" content="https://qwertwwwe.github.io/images/general-shellcode/kernel32_arch.png">
 <meta property="og:image" content="https://qwertwwwe.github.io/images/general-shellcode/ollydbg.png">
-<meta property="og:updated_time" content="2017-01-25T03:08:33.000Z">
+<meta property="og:updated_time" content="2017-07-25T14:38:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="General shellcode">
-<meta name="twitter:description" content="windows xp上的通用shellcode0day书上3.4节的通用shellcode开发实验：
-开发环境windows xp sp3visual C++ 6.0
-shellcode适用环境windows xp sp3及之前版本，windows 7稍微改动亦可
-1.获取3个函数名hash后的值通过将字符串进行hash计算，得到一个更短的字符串，从而简化shellcode中字符串对比的代码。ha">
+<meta name="twitter:description" content="windows xp上的通用shellcode0day书上3.4节的通用shellcode开发实验：">
 <meta name="twitter:image" content="https://qwertwwwe.github.io/images/general-shellcode/shellcode_stack1.png">
 
 
@@ -357,7 +348,7 @@ shellcode适用环境windows xp sp3及之前版本，windows 7稍微改动亦可
       
 
       
-        <h1 id="windows-xp上的通用shellcode"><a href="#windows-xp上的通用shellcode" class="headerlink" title="windows xp上的通用shellcode"></a>windows xp上的通用shellcode</h1><p>0day书上3.4节的通用shellcode开发实验：</p>
+        <h1 id="windows-xp上的通用shellcode"><a href="#windows-xp上的通用shellcode" class="headerlink" title="windows xp上的通用shellcode"></a>windows xp上的通用shellcode</h1><p>0day书上3.4节的通用shellcode开发实验：<br><a id="more"></a></p>
 <h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><p>windows xp sp3<br>visual C++ 6.0</p>
 <h2 id="shellcode适用环境"><a href="#shellcode适用环境" class="headerlink" title="shellcode适用环境"></a>shellcode适用环境</h2><p>windows xp sp3及之前版本，windows 7稍微改动亦可</p>
 <h3 id="1-获取3个函数名hash后的值"><a href="#1-获取3个函数名hash后的值" class="headerlink" title="1.获取3个函数名hash后的值"></a>1.获取3个函数名hash后的值</h3><p>通过将字符串进行hash计算，得到一个更短的字符串，从而简化shellcode中字符串对比的代码。<br>hash函数的C代码如下：</p>

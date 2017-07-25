@@ -98,21 +98,18 @@
 
 
 <meta name="description" content="date: 2017-04-22 13:37:13
-PoDoFo 0.9.5 funciton PdfPagesTree::GetPageNodeFromArray in PdfPagesTree.cpp cause a denial of service.
-Analyzercode from https://sourceforge.net/p/podofo/code/HEAD/tree/podo">
+PoDoFo 0.9.5 funciton PdfPagesTree::GetPageNodeFromArray in PdfPagesTree.cpp cause a denial of service.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PoDoFo 0.9.5 allows remote attackers to cause a denial of service(infinite loop)">
 <meta property="og:url" content="https://qwertwwwe.github.io/2017/04/22/PoDoFo-0-9-5-allows-remote-attackers-to-cause-a-denial-of-service-infinit-loop/index.html">
 <meta property="og:site_name" content="qwertwwwe">
 <meta property="og:description" content="date: 2017-04-22 13:37:13
-PoDoFo 0.9.5 funciton PdfPagesTree::GetPageNodeFromArray in PdfPagesTree.cpp cause a denial of service.
-Analyzercode from https://sourceforge.net/p/podofo/code/HEAD/tree/podo">
-<meta property="og:updated_time" content="2017-07-25T09:48:57.000Z">
+PoDoFo 0.9.5 funciton PdfPagesTree::GetPageNodeFromArray in PdfPagesTree.cpp cause a denial of service.">
+<meta property="og:updated_time" content="2017-07-25T14:38:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PoDoFo 0.9.5 allows remote attackers to cause a denial of service(infinite loop)">
 <meta name="twitter:description" content="date: 2017-04-22 13:37:13
-PoDoFo 0.9.5 funciton PdfPagesTree::GetPageNodeFromArray in PdfPagesTree.cpp cause a denial of service.
-Analyzercode from https://sourceforge.net/p/podofo/code/HEAD/tree/podo">
+PoDoFo 0.9.5 funciton PdfPagesTree::GetPageNodeFromArray in PdfPagesTree.cpp cause a denial of service.">
 
 
 
@@ -351,6 +348,7 @@ Analyzercode from https://sourceforge.net/p/podofo/code/HEAD/tree/podo">
       
         <p>date: 2017-04-22 13:37:13</p>
 <p>PoDoFo 0.9.5 funciton PdfPagesTree::GetPageNodeFromArray in PdfPagesTree.cpp cause a denial of service.</p>
+<a id="more"></a>
 <h3 id="Analyzer"><a href="#Analyzer" class="headerlink" title="Analyzer"></a>Analyzer</h3><p>code from <a href="https://sourceforge.net/p/podofo/code/HEAD/tree/podofo/trunk/" target="_blank" rel="external">https://sourceforge.net/p/podofo/code/HEAD/tree/podofo/trunk/</a> (2017-04-09)</p>
 <p>compile:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cmake -G <span class="string">"Unix Makefiles"</span> -DCMAKE_INSTALL_PREFIX=/home/icepng/aaaa/ -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_EXE_LINKER_FLAGS=<span class="string">"-fsanitize=address -fno-omit-frame-pointer"</span> ../</div><div class="line">make -j</div></pre></td></tr></table></figure>
