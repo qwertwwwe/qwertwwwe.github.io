@@ -121,7 +121,7 @@
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/08/10/windows驱动开发环境搭建以及helloworld/dbgview2.png">
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/08/10/windows驱动开发环境搭建以及helloworld/InstDrv.png">
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/08/10/windows驱动开发环境搭建以及helloworld/result.png">
-<meta property="og:updated_time" content="2017-08-10T09:35:22.000Z">
+<meta property="og:updated_time" content="2017-08-10T09:38:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="windows驱动开发环境搭建以及helloworld">
 <meta name="twitter:description" content="Windows驱动开发的环境搭建以及helloworld程序运行~还是写个文档记下来，免得一段时间不用又忘了。。~
@@ -386,7 +386,7 @@
 
 <p><img src="/2017/08/10/windows驱动开发环境搭建以及helloworld/DriverEntry.jpg" alt=""></p>
 <p>代码如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ntifs.h&gt;</span></span><span class="function">VOID <span class="title">UnLoadDriver</span><span class="params">(PDRIVER_OBJECT pDriverObject)</span></span>&#123;	KdPrint((<span class="string">"UnloadDriver success!"</span>));&#125;<span class="function">NTSTATUS <span class="title">DriverEntry</span><span class="params">(PDRIVER_OBJECT pDriverObject, PUNICODE_STRING pRegistryPath)</span></span>&#123;	KdPrint((<span class="string">"%wZ"</span>, pRegistryPath));	pDriverObject-&gt;DriverUnload = UnLoadDriver;	<span class="keyword">return</span> STATUS_SUCCESS;&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ntifs.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function">VOID <span class="title">UnLoadDriver</span><span class="params">(PDRIVER_OBJECT pDriverObject)</span></span></div><div class="line">&#123;</div><div class="line">    KdPrint((<span class="string">"UnloadDriver success!"</span>));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">NTSTATUS <span class="title">DriverEntry</span><span class="params">(PDRIVER_OBJECT pDriverObject, PUNICODE_STRING pRegistryPath)</span></span></div><div class="line">&#123;</div><div class="line">    KdPrint((<span class="string">"%wZ"</span>, pRegistryPath));</div><div class="line">    pDriverObject-&gt;DriverUnload = UnLoadDriver;</div><div class="line">    <span class="keyword">return</span> STATUS_SUCCESS;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="二、修改项目属性"><a href="#二、修改项目属性" class="headerlink" title="二、修改项目属性"></a>二、修改项目属性</h2><p>1.警告等级：</p>
 <p><img src="/2017/08/10/windows驱动开发环境搭建以及helloworld/warning.jpg" alt=""></p>
 <p>将警告等级改为3；将警告视为错误改为否；</p>
