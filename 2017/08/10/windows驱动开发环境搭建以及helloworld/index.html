@@ -121,7 +121,7 @@
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/08/10/windows驱动开发环境搭建以及helloworld/dbgview2.png">
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/08/10/windows驱动开发环境搭建以及helloworld/InstDrv.png">
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/08/10/windows驱动开发环境搭建以及helloworld/result.png">
-<meta property="og:updated_time" content="2017-08-10T09:38:38.000Z">
+<meta property="og:updated_time" content="2017-08-11T03:17:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="windows驱动开发环境搭建以及helloworld">
 <meta name="twitter:description" content="Windows驱动开发的环境搭建以及helloworld程序运行~还是写个文档记下来，免得一段时间不用又忘了。。~
@@ -400,9 +400,13 @@
 <p>连接到本地机器<br><img src="/2017/08/10/windows驱动开发环境搭建以及helloworld/dbgview2.png" alt=""></p>
 <p>4.用Admin权限打开InstDrv.exe，并选择拷贝进来的.sys文件；<br>点击安装、启动，就可以在gdbview.exe里看到相应的log了。<br><img src="/2017/08/10/windows驱动开发环境搭建以及helloworld/InstDrv.png" alt=""></p>
 <p><img src="/2017/08/10/windows驱动开发环境搭建以及helloworld/result.png" alt=""><br>点击停止、卸载，一样看到log。</p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>到这里，基本开发环境和测试环境都可以了，helloworld也运行通了。<br>这里其实关闭win7的强制签名机制，在测试时还是可能遇到很多崩溃的问题，而且加载驱动用这个InstDrv.exe也不是很方便，其实我后来看到的一些程序，基本都不用这么加载，直接右键安装，然后在cmd里启动就行了。</p>
-<p>然后就是签名的问题，在自己测试的时候，可以将系统设置为测试模式，然后通过对驱动程序进行测试签名（其实就是运行几条指令），就可以了。既不会出现崩溃的问题，也不用在编译时关闭Sign选项。这个我在后面的一篇文章里写，就几条指令，从网上抄过来的，怕自己忘了，还是记下来比较好。</p>
-<p>如果要正式发布驱动程序，让其可以在任意计算机上安装执行，则需要购买证书，个人版大概几百一年吧~~</p>
+<p>如果没有出现log信息，win7系统可尝试修改下系统配置重试：<br>打开注册表HKLM/SYSTEM/CurrentControlSet/Control/Session Manager，打开或者创建子项Debug Print Filter，然后新建一个DWORD值DEFAULT，将其设置成0xF，重启即可。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>1.驱动签名</p>
+<p>到这里，基本开发环境和测试环境都可以了，helloworld也运行通了。<br>这里其实关闭win7的强制签名机制，在测试时还是可能遇到很多崩溃的问题，其实可以通过进行测试签名来解决这些问题，过程也很简单，参考链接：</p>
+<p>如果要正式发布驱动程序，让其可以在任意计算机上安装执行，则需要购买证书，个人版大概几百RMB一年吧~~</p>
+<p>2.驱动加载</p>
+<p>目前的加载驱动用这个InstDrv.exe不是很方便，其实我后来看到的一些程序，基本都不用这么加载，直接右键安装，然后在cmd里启动就行了，这个和驱动类型有关；</p>
+<p>3.Samples学习<br>微软给出了各种类型的驱动samples，拿来学习很好用，参考链接：<br><a href="https://github.com/Microsoft/Windows-driver-samples" target="_blank" rel="external">https://github.com/Microsoft/Windows-driver-samples</a></p>
 
       
     </div>
@@ -448,6 +452,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/11/Windows驱动开发-测试证书签名/" rel="prev" title="Windows驱动开发--测试证书签名">
+                Windows驱动开发--测试证书签名 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -522,7 +530,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -570,7 +578,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境搭建"><span class="nav-number">1.</span> <span class="nav-text">开发环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、开发及测试环境"><span class="nav-number">1.1.</span> <span class="nav-text">一、开发及测试环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、安装相应的开发软件"><span class="nav-number">1.2.</span> <span class="nav-text">二、安装相应的开发软件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#helloworld程序"><span class="nav-number">2.</span> <span class="nav-text">helloworld程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、新建驱动程序"><span class="nav-number">2.1.</span> <span class="nav-text">一、新建驱动程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、修改项目属性"><span class="nav-number">2.2.</span> <span class="nav-text">二、修改项目属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在目标机器上运行"><span class="nav-number">3.</span> <span class="nav-text">在目标机器上运行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境搭建"><span class="nav-number">1.</span> <span class="nav-text">开发环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、开发及测试环境"><span class="nav-number">1.1.</span> <span class="nav-text">一、开发及测试环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、安装相应的开发软件"><span class="nav-number">1.2.</span> <span class="nav-text">二、安装相应的开发软件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#helloworld程序"><span class="nav-number">2.</span> <span class="nav-text">helloworld程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、新建驱动程序"><span class="nav-number">2.1.</span> <span class="nav-text">一、新建驱动程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、修改项目属性"><span class="nav-number">2.2.</span> <span class="nav-text">二、修改项目属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在目标机器上运行"><span class="nav-number">3.</span> <span class="nav-text">在目标机器上运行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li></ol></div>
             
 
           </div>
