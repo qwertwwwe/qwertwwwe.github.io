@@ -105,7 +105,7 @@
 <meta property="og:description" content="一、问题背景昨天被问到了c++中指针和引用的区别，其实这个问题很早就从网上和书中看过，毕竟这是c++最常用也是很重要的知识点。我一直的理解是指针是一种数据结构，它和int, float等其他数据结构其实没有什么本质的区别，只不过指针这个数据结构表示的值是一个内存地址，用户可以通过指针变量的值去访问相应内存地址中的数据；对于引用，一直以来网上和书上大多数对引用的解释是引用和其绑定的变量是同一个东西，">
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/11/09/c-中指针和引用的区别/main函数栈.png">
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/11/09/c-中指针和引用的区别/pointer函数栈.png">
-<meta property="og:updated_time" content="2017-11-09T17:37:02.000Z">
+<meta property="og:updated_time" content="2017-11-09T17:38:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="c++中指针和引用的区别">
 <meta name="twitter:description" content="一、问题背景昨天被问到了c++中指针和引用的区别，其实这个问题很早就从网上和书中看过，毕竟这是c++最常用也是很重要的知识点。我一直的理解是指针是一种数据结构，它和int, float等其他数据结构其实没有什么本质的区别，只不过指针这个数据结构表示的值是一个内存地址，用户可以通过指针变量的值去访问相应内存地址中的数据；对于引用，一直以来网上和书上大多数对引用的解释是引用和其绑定的变量是同一个东西，">
@@ -347,6 +347,7 @@
 
       
         <h1 id="一、问题背景"><a href="#一、问题背景" class="headerlink" title="一、问题背景"></a>一、问题背景</h1><p>昨天被问到了c++中指针和引用的区别，其实这个问题很早就从网上和书中看过，毕竟这是c++最常用也是很重要的知识点。我一直的理解是指针是一种数据结构，它和int, float等其他数据结构其实没有什么本质的区别，只不过指针这个数据结构表示的值是一个内存地址，用户可以通过指针变量的值去访问相应内存地址中的数据；对于引用，一直以来网上和书上大多数对引用的解释是引用和其绑定的变量是同一个东西，但是怎么去解释什么叫同一个东西，就不好说了，而且我一直以为引用是不占空间的，直观上的理解和它绑定的变量是同一个东西嘛，那引用自身就不占空间咯，但是事实并不是这样，今天从底层对这两个数据类型分析了下，从原理上来理解指针和引用的本质区别。</p>
+<a id="more"></a>
 <h1 id="二、用法上的区别"><a href="#二、用法上的区别" class="headerlink" title="二、用法上的区别"></a>二、用法上的区别</h1><p>首先列一下指针和引用使用上的区别，也就是常见的书上和网上说的区别：<br>此处引用下面bolg中写的内容：<br><a href="https://www.cnblogs.com/dolphin0520/archive/2011/04/03/2004869.html" target="_blank" rel="external">https://www.cnblogs.com/dolphin0520/archive/2011/04/03/2004869.html</a></p>
 <p>(1) 指针：指针是一个变量，只不过这个变量存储的是一个地址，指向内存的一个存储单元；而引用跟原来的变量实质上是同一个东西，只不过是原变量的一个别名而已。如：</p>
 <p>int a=1;int *p=&a;<br>int a=1;int &amp;b=a;</p>
