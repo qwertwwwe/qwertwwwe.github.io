@@ -105,7 +105,7 @@
 <meta property="og:description" content="一、问题背景昨天被问到了c++中指针和引用的区别，其实这个问题很早就从网上和书中看过，毕竟这是c++最常用也是很重要的知识点。我一直的理解是指针是一种数据结构，它和int, float等其他数据结构其实没有什么本质的区别，只不过指针这个数据结构表示的值是一个内存地址，用户可以通过指针变量的值去访问相应内存地址中的数据；对于引用，一直以来网上和书上大多数对引用的解释是引用和其绑定的变量是同一个东西，">
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/11/09/c-中指针和引用的区别/main函数栈.png">
 <meta property="og:image" content="https://qwertwwwe.github.io/2017/11/09/c-中指针和引用的区别/pointer函数栈.png">
-<meta property="og:updated_time" content="2017-11-09T17:42:04.000Z">
+<meta property="og:updated_time" content="2017-11-10T01:33:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="c++中指针和引用的区别">
 <meta name="twitter:description" content="一、问题背景昨天被问到了c++中指针和引用的区别，其实这个问题很早就从网上和书中看过，毕竟这是c++最常用也是很重要的知识点。我一直的理解是指针是一种数据结构，它和int, float等其他数据结构其实没有什么本质的区别，只不过指针这个数据结构表示的值是一个内存地址，用户可以通过指针变量的值去访问相应内存地址中的数据；对于引用，一直以来网上和书上大多数对引用的解释是引用和其绑定的变量是同一个东西，">
@@ -377,7 +377,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subq $48, %rsp</div></pre></td></tr></table></figure>
 <p>变成了</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subq $64, %rsp。</div></pre></td></tr></table></figure>
-<p>也就是说实际上引用d是占了栈空间的，而且和指针大小一样，从下面两行看出来，其实底层它还是一个指针。</p>
+<p>也就是说实际上引用d是占了栈空间的，从下面两行看出来，其实底层它还是一个指针。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">movq    %rax, -40(%rbp)</div><div class="line">movq    -40(%rbp), %rdi</div></pre></td></tr></table></figure>
 <h1 id="四、结论"><a href="#四、结论" class="headerlink" title="四、结论"></a>四、结论</h1><p>通过上面的分析，我最后得出的结论就是：</p>
 <ol>
