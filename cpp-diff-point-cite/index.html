@@ -1,0 +1,777 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="1lx6lylo1eoYGipgLskWpjx25F20JXR3fL26uNyZ_cM" />
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="3uZay8SxDH88uGn1" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="cpp," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="一、问题背景昨天被问到了c++中指针和引用的区别，其实这个问题很早就从网上和书中看过，毕竟这是c++最常用也是很重要的知识点。我一直的理解是指针是一种数据结构，它和int, float等其他数据结构其实没有什么本质的区别，只不过指针这个数据结构表示的值是一个内存地址，用户可以通过指针变量的值去访问相应内存地址中的数据；对于引用，一直以来网上和书上大多数对引用的解释是引用和其绑定的变量是同一个东西，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++中指针和引用的区别">
+<meta property="og:url" content="https://qwertwwwe.github.io/cpp-diff-point-cite/index.html">
+<meta property="og:site_name" content="qwertwwwe">
+<meta property="og:description" content="一、问题背景昨天被问到了c++中指针和引用的区别，其实这个问题很早就从网上和书中看过，毕竟这是c++最常用也是很重要的知识点。我一直的理解是指针是一种数据结构，它和int, float等其他数据结构其实没有什么本质的区别，只不过指针这个数据结构表示的值是一个内存地址，用户可以通过指针变量的值去访问相应内存地址中的数据；对于引用，一直以来网上和书上大多数对引用的解释是引用和其绑定的变量是同一个东西，">
+<meta property="og:image" content="https://qwertwwwe.github.io/urlname/c-中指针和引用的区别/main函数栈.png">
+<meta property="og:image" content="https://qwertwwwe.github.io/urlname/c-中指针和引用的区别/pointer函数栈.png">
+<meta property="og:updated_time" content="2018-06-06T14:00:48.433Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++中指针和引用的区别">
+<meta name="twitter:description" content="一、问题背景昨天被问到了c++中指针和引用的区别，其实这个问题很早就从网上和书中看过，毕竟这是c++最常用也是很重要的知识点。我一直的理解是指针是一种数据结构，它和int, float等其他数据结构其实没有什么本质的区别，只不过指针这个数据结构表示的值是一个内存地址，用户可以通过指针变量的值去访问相应内存地址中的数据；对于引用，一直以来网上和书上大多数对引用的解释是引用和其绑定的变量是同一个东西，">
+<meta name="twitter:image" content="https://qwertwwwe.github.io/urlname/c-中指针和引用的区别/main函数栈.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://qwertwwwe.github.io/cpp-diff-point-cite/"/>
+
+
+
+
+
+  <title>c++中指针和引用的区别 | qwertwwwe</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?bcbaa984b5bd501cef6054c7b2172803";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">qwertwwwe</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://qwertwwwe.github.io/cpp-diff-point-cite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="rg">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/meiqiu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qwertwwwe">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">c++中指针和引用的区别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-09T23:48:14+08:00">
+                2017-11-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一、问题背景"><a href="#一、问题背景" class="headerlink" title="一、问题背景"></a>一、问题背景</h1><p>昨天被问到了c++中指针和引用的区别，其实这个问题很早就从网上和书中看过，毕竟这是c++最常用也是很重要的知识点。我一直的理解是指针是一种数据结构，它和int, float等其他数据结构其实没有什么本质的区别，只不过指针这个数据结构表示的值是一个内存地址，用户可以通过指针变量的值去访问相应内存地址中的数据；对于引用，一直以来网上和书上大多数对引用的解释是引用和其绑定的变量是同一个东西，但是怎么去解释什么叫同一个东西，就不好说了，而且我一直以为引用是不占空间的，直观上的理解和它绑定的变量是同一个东西嘛，那引用自身就不占空间咯，但是事实并不是这样，今天从底层对这两个数据类型分析了下，从原理上来理解指针和引用的本质区别。</p>
+<a id="more"></a>
+<h1 id="二、用法上的区别"><a href="#二、用法上的区别" class="headerlink" title="二、用法上的区别"></a>二、用法上的区别</h1><p>首先列一下指针和引用使用上的区别，也就是常见的书上和网上说的区别：<br>此处引用下面bolg中写的内容：<br><a href="https://www.cnblogs.com/dolphin0520/archive/2011/04/03/2004869.html" target="_blank" rel="external">https://www.cnblogs.com/dolphin0520/archive/2011/04/03/2004869.html</a></p>
+<p>(1) 指针：指针是一个变量，只不过这个变量存储的是一个地址，指向内存的一个存储单元；而引用跟原来的变量实质上是同一个东西，只不过是原变量的一个别名而已。如：</p>
+<p>int a=1;int *p=&a;<br>int a=1;int &amp;b=a;</p>
+<p>上面定义了一个整形变量和一个指针变量p，该指针变量指向a的存储单元，即p的值是a存储单元的地址。<br>而下面2句定义了一个整形变量a和这个整形a的引用b，事实上a和b是同一个东西，在内存占有同一个存储单元。</p>
+<p>(2)可以有const指针，但是没有const引用；<br>(3)指针可以有多级，但是引用只能是一级（int **p；合法 而 int &amp;&amp;a是不合法的）<br>(4)指针的值可以为空，但是引用的值不能为NULL，并且引用在定义的时候必须初始化；<br>(5)指针的值在初始化后可以改变，即指向其它的存储单元，而引用在进行初始化后就不会再改变了。<br>(6)”sizeof引用”得到的是所指向的变量(对象)的大小，而”sizeof指针”得到的是指针本身的大小；<br>(7)指针和引用的自增(++)运算意义不一样；</p>
+<h1 id="三、从汇编代码看看引用和指针的实现"><a href="#三、从汇编代码看看引用和指针的实现" class="headerlink" title="三、从汇编代码看看引用和指针的实现"></a>三、从汇编代码看看引用和指针的实现</h1><p>我们通常用引用的时候是函数调用传参时，使用引用的代码相对于用指针更加简洁，而且不容易出错，我拿3份代码做对比：</p>
+<p>测试环境：<br>操作系统： osx 10.12.6<br>g++版本：4.2.1</p>
+<h2 id="3-1-普通传参"><a href="#3-1-普通传参" class="headerlink" title="3.1 普通传参"></a>3.1 普通传参</h2><p>main.cpp文件</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">    a = a + b;</div><div class="line">    <span class="keyword">return</span> a;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</div><div class="line">    <span class="keyword">int</span> c = f(a, b);</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是最简单的函数调用了，当然我们知道f()函数里面对a的修改并不会影响main()函数中的变量a的值。<br>我用-O0优化来编译，看下汇编代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">g++ main.cpp -S -O0 -o main.asm</div></pre></td></tr></table></figure>
+<p>汇编代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">    ... ...</div><div class="line">__Z1fii:                                ## @_Z1fii</div><div class="line">## BB#0:</div><div class="line">	pushq	%rbp</div><div class="line">	movq	%rsp, %rbp</div><div class="line">	movl	%edi, -4(%rbp)</div><div class="line">	movl	%esi, -8(%rbp)</div><div class="line">	movl	-4(%rbp), %esi</div><div class="line">	addl	-8(%rbp), %esi</div><div class="line">	movl	%esi, -4(%rbp)</div><div class="line">	movl	-4(%rbp), %eax</div><div class="line">	popq	%rbp</div><div class="line">	retq</div><div class="line">    ... ...</div><div class="line">_main:                                  ## @main</div><div class="line">    ... ...</div><div class="line">	pushq	%rbp</div><div class="line">	subq	$48, %rsp</div><div class="line">	movl	$0, -20(%rbp)</div><div class="line">	movl	$1, -24(%rbp)</div><div class="line">	movl	$2, -28(%rbp)</div><div class="line">	movl	-24(%rbp), %edi</div><div class="line">	movl	-28(%rbp), %esi</div><div class="line">	callq	__Z1fii</div><div class="line">    ... ...</div></pre></td></tr></table></figure>
+<p>这个很简单，程序栈中的数据分布如图所示，调用f函数就是将main函数中的a,b变量值拷贝到f栈空间中a,b变量处，然后进行计算，在f函数中对a,b的赋值都是只改变f栈空间中的a,b变量，并不会影响到main中的a,b。<br><img src="/urlname/c-中指针和引用的区别/main函数栈.png" alt=""></p>
+<h2 id="3-2-指针传参"><a href="#3-2-指针传参" class="headerlink" title="3.2 指针传参"></a>3.2 指针传参</h2><p>同样的方法：<br>pointer.cpp</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> *b)</span> </span>&#123;</div><div class="line">    *a = *a + *b;</div><div class="line">    <span class="keyword">return</span> *a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</div><div class="line">    <span class="keyword">int</span> c = f(&amp;a, &amp;b);</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">__Z1fPiS_:                              ## @_Z1fPiS_</div><div class="line">## BB#0:</div><div class="line">    ... ...</div><div class="line">	pushq	%rbp</div><div class="line">	movq	%rsp, %rbp</div><div class="line">	movq	%rdi, -8(%rbp)</div><div class="line">	movq	%rsi, -16(%rbp)</div><div class="line">	movq	-8(%rbp), %rsi</div><div class="line">	movl	(%rsi), %eax</div><div class="line">	movq	-16(%rbp), %rsi</div><div class="line">	addl	(%rsi), %eax</div><div class="line">	movq	-8(%rbp), %rsi</div><div class="line">	movl	%eax, (%rsi)</div><div class="line">	movq	-8(%rbp), %rsi</div><div class="line">	movl	(%rsi), %eax</div><div class="line">	popq	%rbp</div><div class="line">	retq</div><div class="line">    ... ...</div><div class="line">_main:                                  ## @main</div><div class="line">## BB#0:</div><div class="line">	pushq	%rbp</div><div class="line">	movq	%rsp, %rbp</div><div class="line">Ltmp5:</div><div class="line">	subq	$48, %rsp</div><div class="line">	leaq	-24(%rbp), %rdi</div><div class="line">	leaq	-28(%rbp), %rsi</div><div class="line">	movl	$0, -20(%rbp)</div><div class="line">	movl	$1, -24(%rbp)</div><div class="line">	movl	$2, -28(%rbp)</div><div class="line">	callq	__Z1fPiS_</div><div class="line">    ... ...</div></pre></td></tr></table></figure>
+<p>从汇编里看到，这里利用rdi, rsi讲 a, b的地址传给了f函数，f函数中通过获取的addr_a, addr_b，从而间接获取a,b的值，以及可以对a,b的值进行操作。其函数栈数据分布如下图：<br><img src="/urlname/c-中指针和引用的区别/pointer函数栈.png" alt=""></p>
+<h2 id="3-3-引用传参"><a href="#3-3-引用传参" class="headerlink" title="3.3 引用传参"></a>3.3 引用传参</h2><p>reference.cpp</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b)</span> </span>&#123;</div><div class="line">    a = a + b;</div><div class="line">    <span class="keyword">return</span> a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</div><div class="line">    <span class="keyword">int</span> c = f(a, b);</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">    ... ...</div><div class="line">__Z1fRiS_:                              ## @_Z1fRiS_</div><div class="line">## BB#0:</div><div class="line">	pushq	%rbp</div><div class="line">	movq	%rsp, %rbp</div><div class="line">	movq	%rdi, -8(%rbp)</div><div class="line">	movq	%rsi, -16(%rbp)</div><div class="line">	movq	-8(%rbp), %rsi</div><div class="line">	movl	(%rsi), %eax</div><div class="line">	movq	-16(%rbp), %rsi</div><div class="line">	addl	(%rsi), %eax</div><div class="line">	movq	-8(%rbp), %rsi</div><div class="line">	movl	%eax, (%rsi)</div><div class="line">	movq	-8(%rbp), %rsi</div><div class="line">	movl	(%rsi), %eax</div><div class="line">	popq	%rbp</div><div class="line">	retq</div><div class="line"></div><div class="line">_main:                                  ## @main</div><div class="line">## BB#0:</div><div class="line">	pushq	%rbp</div><div class="line">	movq	%rsp, %rbp</div><div class="line">	subq	$48, %rsp</div><div class="line">	leaq	-24(%rbp), %rdi</div><div class="line">	leaq	-28(%rbp), %rsi</div><div class="line">	movl	$0, -20(%rbp)</div><div class="line">	movl	$1, -24(%rbp)</div><div class="line">	movl	$2, -28(%rbp)</div><div class="line">	callq	__Z1fRiS_</div><div class="line">    ... ...</div></pre></td></tr></table></figure>
+<p>从汇编代码看出来，利用引用传参时，传的参数和利用指针其实是一样的，都是传的a,b的地址。那么从这里可以看出来，其实引用和指针在底层实现其实是一样的（至少在函数传参方面），两者在使用上的区别主要是c++规定的语法上的编写代码方法不同和限制不同而已。</p>
+<h2 id="3-4-引用占空间吗？"><a href="#3-4-引用占空间吗？" class="headerlink" title="3.4 引用占空间吗？"></a>3.4 引用占空间吗？</h2><p>网上总说，引用和它绑定的变量是同一个东西，只是别名而已，然后我就一直理解为名称替换这种形式的，就是编译时编译器把所有引用名称替换成它绑定的变量就行了。实际情况呢，我写了个代码试试，我把3.3的代码改改，加个引用变量：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b)</span> </span>&#123;</div><div class="line">    a = a + b;</div><div class="line">    <span class="keyword">return</span> a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</div><div class="line">    <span class="keyword">int</span> &amp;d = a;</div><div class="line">    <span class="keyword">int</span> c = f(d, b);</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">    ... ...</div><div class="line">__Z1fRiS_:                              ## @_Z1fRiS_</div><div class="line">## BB#0:</div><div class="line">	pushq	%rbp</div><div class="line">	movq	%rsp, %rbp</div><div class="line">	movq	%rdi, -8(%rbp)</div><div class="line">	movq	%rsi, -16(%rbp)</div><div class="line">	movq	-8(%rbp), %rsi</div><div class="line">	movl	(%rsi), %eax</div><div class="line">	movq	-16(%rbp), %rsi</div><div class="line">	addl	(%rsi), %eax</div><div class="line">	movq	-8(%rbp), %rsi</div><div class="line">	movl	%eax, (%rsi)</div><div class="line">	movq	-8(%rbp), %rsi</div><div class="line">	movl	(%rsi), %eax</div><div class="line">	popq	%rbp</div><div class="line">	retq</div><div class="line">_main:                                  ## @main</div><div class="line">## BB#0:</div><div class="line">	pushq	%rbp</div><div class="line">	movq	%rsp, %rbp</div><div class="line">	subq	$64, %rsp</div><div class="line">	leaq	-28(%rbp), %rsi</div><div class="line">	leaq	-24(%rbp), %rax</div><div class="line">	movl	$0, -20(%rbp)</div><div class="line">	movl	$1, -24(%rbp)</div><div class="line">	movl	$2, -28(%rbp)</div><div class="line">	movq	%rax, -40(%rbp)</div><div class="line">	movq	-40(%rbp), %rdi</div><div class="line">	callq	__Z1fRiS_</div><div class="line">    ... ...</div></pre></td></tr></table></figure>
+<p>可以从汇编代码看出来，这里main函数的栈空间长度从3.3中的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subq $48, %rsp</div></pre></td></tr></table></figure>
+<p>变成了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subq $64, %rsp。</div></pre></td></tr></table></figure>
+<p>也就是说实际上引用d是占了栈空间的，从下面两行看出来，其实底层它还是一个指针。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">movq    %rax, -40(%rbp)</div><div class="line">movq    -40(%rbp), %rdi</div></pre></td></tr></table></figure>
+<h1 id="四、结论"><a href="#四、结论" class="headerlink" title="四、结论"></a>四、结论</h1><p>通过上面的分析，我最后得出的结论就是：</p>
+<ol>
+<li>在使用上，指针和引用的区别就像第二章列的几点，有着不同的限制和写法。</li>
+<li>在底层（汇编）实现上，其实是一样的，都是用指针方式，也就是说所有的不同都是编译器在语法层面的限制，底层实现原理是一样的。</li>
+</ol>
+<p>最后，不同的编译器和优化选项可能造成不同的结果，不知道开-O2优化后会是什么样，我总觉得从c++的规定来说，在不传参的时候，引用不就是别名么，为什么要分配个空间呢~，我觉得开优化编译器会把这个优化掉，直接做个名称替换不就可以了，对于开优化后的情况，以后有时间再试试吧。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cpp/" rel="tag"># cpp</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/windows-driver-develop-wfp-framework/" rel="next" title="windows驱动-WFP框架介绍及其编程">
+                <i class="fa fa-chevron-left"></i> windows驱动-WFP框架介绍及其编程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/prometheus-monitor-kubernetes/" rel="prev" title="利用prometheus监控kubernetes集群">
+                利用prometheus监控kubernetes集群 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTcyNy82Mjk0"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/meiqiu.jpg"
+               alt="rg" />
+          <p class="site-author-name" itemprop="name">rg</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、问题背景"><span class="nav-number">1.</span> <span class="nav-text">一、问题背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、用法上的区别"><span class="nav-number">2.</span> <span class="nav-text">二、用法上的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、从汇编代码看看引用和指针的实现"><span class="nav-number">3.</span> <span class="nav-text">三、从汇编代码看看引用和指针的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-普通传参"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 普通传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-指针传参"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 指针传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-引用传参"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 引用传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-引用占空间吗？"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 引用占空间吗？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、结论"><span class="nav-number">4.</span> <span class="nav-text">四、结论</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rg</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
