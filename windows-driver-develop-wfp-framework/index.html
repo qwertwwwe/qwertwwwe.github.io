@@ -81,7 +81,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="windows-driver," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -105,14 +105,14 @@ WFP是windows推出来的新一代对网络数据进行操作的框架，用于�
 <meta property="og:site_name" content="qwertwwwe">
 <meta property="og:description" content="一、WFP简介Windows过滤平台（Windows Filtering Platform, WFP）是为网络数据包过滤提供的一套框架，其包含相应的API和服务。通过WFP框架，我们可以实现防火墙、入侵检测系统、网络监控等软件。
 WFP是windows推出来的新一代对网络数据进行操作的框架，用于取代TDI框架，基于WFP编程相对更加简单（我没接触过TDI…）,WFP适用于windows 2000和">
-<meta property="og:image" content="https://qwertwwwe.github.io/urlname/windows驱动-WFP框架介绍及其编程/WFP工作图.png">
-<meta property="og:image" content="https://qwertwwwe.github.io/urlname/windows驱动-WFP框架介绍及其编程/WFP内部框架.png">
-<meta property="og:updated_time" content="2018-06-06T14:02:29.366Z">
+<meta property="og:image" content="https://qwertwwwe.github.io/windows-driver-develop-wfp-framework/windows驱动-WFP框架介绍及其编程/WFP工作图.png">
+<meta property="og:image" content="https://qwertwwwe.github.io/windows-driver-develop-wfp-framework/windows驱动-WFP框架介绍及其编程/WFP内部框架.png">
+<meta property="og:updated_time" content="2018-06-06T14:25:39.394Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="windows驱动-WFP框架介绍及其编程">
 <meta name="twitter:description" content="一、WFP简介Windows过滤平台（Windows Filtering Platform, WFP）是为网络数据包过滤提供的一套框架，其包含相应的API和服务。通过WFP框架，我们可以实现防火墙、入侵检测系统、网络监控等软件。
 WFP是windows推出来的新一代对网络数据进行操作的框架，用于取代TDI框架，基于WFP编程相对更加简单（我没接触过TDI…）,WFP适用于windows 2000和">
-<meta name="twitter:image" content="https://qwertwwwe.github.io/urlname/windows驱动-WFP框架介绍及其编程/WFP工作图.png">
+<meta name="twitter:image" content="https://qwertwwwe.github.io/windows-driver-develop-wfp-framework/windows驱动-WFP框架介绍及其编程/WFP工作图.png">
 
 
 
@@ -375,11 +375,11 @@ WFP是windows推出来的新一代对网络数据进行操作的框架，用于�
 <p>WFP是windows推出来的新一代对网络数据进行操作的框架，用于取代TDI框架，基于WFP编程相对更加简单（我没接触过TDI…）,WFP适用于windows 2000和 Windows vista以及其以后的系统；</p>
 <p>WFP的优劣点总结可以参考一下链接：<br><a href="http://www.komodia.com/wfp_hl" target="_blank" rel="external">http://www.komodia.com/wfp_hl</a></p>
 <a id="more"></a>
-<h1 id="二、WFP框架"><a href="#二、WFP框架" class="headerlink" title="二、WFP框架"></a>二、WFP框架</h1><h2 id="1-WFP框架与系统的交互方式"><a href="#1-WFP框架与系统的交互方式" class="headerlink" title="1. WFP框架与系统的交互方式"></a>1. WFP框架与系统的交互方式</h2><p>首先看WFP框架与系统的交互方式，以及其工作方式的图<br><img src="/urlname/windows驱动-WFP框架介绍及其编程/WFP工作图.png" alt=""></p>
+<h1 id="二、WFP框架"><a href="#二、WFP框架" class="headerlink" title="二、WFP框架"></a>二、WFP框架</h1><h2 id="1-WFP框架与系统的交互方式"><a href="#1-WFP框架与系统的交互方式" class="headerlink" title="1. WFP框架与系统的交互方式"></a>1. WFP框架与系统的交互方式</h2><p>首先看WFP框架与系统的交互方式，以及其工作方式的图<br><img src="/windows-driver-develop-wfp-framework/windows驱动-WFP框架介绍及其编程/WFP工作图.png" alt=""></p>
 <p>WFP框架的主要部分是图中的Filte Engine(过滤引擎)，该过滤引擎与操作系统的Network Stack进行交互和操作，能够对系统网络栈中的数据进行处理，实现数据的过滤等功能。</p>
 <p>过滤引擎内部能够和七层网络模型中的每一层进行交互，实现在不同层对网络数据进行处理。</p>
 <p>图中右边的Callout就是具体对网络数据进行操作部分，使用WFP提供的API，我们可以定义自己的Callout，并向Filter Engine注册。每个Callout可以理解为一个对网络数据包处理的集合，其中包含其处于的网络层、过滤函数（执行需要处理哪些数据包）、处理方法等等。</p>
-<h2 id="2-WFP框架内部结构"><a href="#2-WFP框架内部结构" class="headerlink" title="2. WFP框架内部结构"></a>2. WFP框架内部结构</h2><p>WFP的主要内部框架图如下图所示：<br><img src="/urlname/windows驱动-WFP框架介绍及其编程/WFP内部框架.png" alt=""></p>
+<h2 id="2-WFP框架内部结构"><a href="#2-WFP框架内部结构" class="headerlink" title="2. WFP框架内部结构"></a>2. WFP框架内部结构</h2><p>WFP的主要内部框架图如下图所示：<br><img src="/windows-driver-develop-wfp-framework/windows驱动-WFP框架介绍及其编程/WFP内部框架.png" alt=""></p>
 <p>图中上半部分为用户态，下半部分为内核态。<br>WFP主要分为两大层次模块：用户态基础过滤引擎（BFE）、内核态过滤引擎（KM Filtering Engine）。实际工作的是内核态的过滤引擎，用户可以在用户层通过其提供的API与BFE交互（BFE会与KM FE交互），或直接在内核层KM FE交互。</p>
 <h1 id="三、与WFP开发相关的主要概念"><a href="#三、与WFP开发相关的主要概念" class="headerlink" title="三、与WFP开发相关的主要概念"></a>三、与WFP开发相关的主要概念</h1><h3 id="1-过滤引擎"><a href="#1-过滤引擎" class="headerlink" title="1. 过滤引擎"></a>1. 过滤引擎</h3><p>WFP的过滤引擎包括BFE（用户态）和KM FE（内核态），其与系统的网络栈进行交互，我们可以向过滤引擎注册过滤规则或对数据的操作，过滤引擎最终完成相应的操作。</p>
 <h3 id="2-垫片"><a href="#2-垫片" class="headerlink" title="2. 垫片"></a>2. 垫片</h3><p>这个概念主要是有关WFP的运行原理，和WFP开发目前没有太大关联。<br>垫片是一种特殊的内核模块，被安插在系统的网络协议栈的不同层中，将不同层的数据传给WFP过滤引擎，并将过滤引擎的反馈操作传回到网络协议栈中。</p>
@@ -433,12 +433,6 @@ WFP是windows推出来的新一代对网络数据进行操作的框架，用于�
     </div>
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/windows-driver/" rel="tag"># windows-driver</a>
-          
-        </div>
       
 
       
@@ -547,7 +541,7 @@ WFP是windows推出来的新一代对网络数据进行操作的框架，用于�
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -558,7 +552,7 @@ WFP是windows推出来的新一代对网络数据进行操作的框架，用于�
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
