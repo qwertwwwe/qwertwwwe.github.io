@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://qwertwwwe.github.io/aws-tools/</loc>
+    
+    <lastmod>2018-07-07T14:06:57.370Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://qwertwwwe.github.io/undefined/</loc>
+    
+    <lastmod>2018-06-11T15:21:32.502Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://qwertwwwe.github.io/windows-read-registers/</loc>
     
     <lastmod>2018-06-06T14:26:18.611Z</lastmod>
@@ -26,13 +40,6 @@
     <loc>https://qwertwwwe.github.io/windows-driver-test-certificate-signature/</loc>
     
     <lastmod>2018-06-06T14:25:09.814Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://qwertwwwe.github.io/prometheus-monitor-kubernetes/</loc>
-    
-    <lastmod>2018-06-06T14:21:47.232Z</lastmod>
     
   </url>
   

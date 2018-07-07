@@ -277,7 +277,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://qwertwwwe.github.io/prometheus-monitor-kubernetes/">
+    <link itemprop="mainEntityOfPage" href="https://qwertwwwe.github.io/aws-tools/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="rg">
@@ -296,7 +296,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/prometheus-monitor-kubernetes/" itemprop="url">利用prometheus监控kubernetes集群</a></h1>
+                <a class="post-title-link" href="/aws-tools/" itemprop="url">aws-tools</a></h1>
         
 
         <div class="post-meta">
@@ -308,8 +308,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-30T11:58:32+08:00">
-                2018-05-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-05T00:13:19+08:00">
+                2018-07-05
               </time>
             
 
@@ -331,8 +331,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/monitor/" itemprop="url" rel="index">
-                    <span itemprop="name">monitor</span>
+                  <a href="/categories/cloud/" itemprop="url" rel="index">
+                    <span itemprop="name">cloud</span>
                   </a>
                 </span>
 
@@ -367,7 +367,197 @@
       
         
           
+            <p>在使用AWS的过程中，需要用到很多AWS提供的工具，以完成相关的AWS部署、配置和更新等操作，这里总结一下最近用到的一些AWS提供的工具。</p>
+<h1 id="一、AWS-CLI"><a href="#一、AWS-CLI" class="headerlink" title="一、AWS CLI"></a>一、AWS CLI</h1><h2 id="1-1-基本功能介绍"><a href="#1-1-基本功能介绍" class="headerlink" title="1.1 基本功能介绍"></a>1.1 基本功能介绍</h2><p>官方链接：<br><a href="https://aws.amazon.com/cn/cli" target="_blank" rel="external">https://aws.amazon.com/cn/cli/</a></p>
+<p>AWS CLI是AWS官方提供的命令行工具，<br>安装方法： pip install awscli</p>
+<h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><p>aws cli提供基本所有操作，所有可以在界面进行的操作，使用aws cli命令都可以进行相应的操作，所以这个对于需要用脚本自动化一些操作非常有用。</p>
+<h3 id="局限"><a href="#局限" class="headerlink" title="局限"></a>局限</h3><p>感觉上aws cli应该是针对AWS操作功能最完善的了吧，目前没发现什么局限性。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>具体使用方法可以看 aws help，或者看官网，感觉使用起来比较简单。</p>
+<h2 id="1-2-使用的一些记录"><a href="#1-2-使用的一些记录" class="headerlink" title="1.2 使用的一些记录"></a>1.2 使用的一些记录</h2><h3 id="aws-cli账户配置"><a href="#aws-cli账户配置" class="headerlink" title="aws cli账户配置"></a>aws cli账户配置</h3><p>AWS上账户和权限管理分了很多类，对于账户来说，常见的有User和Role这2类：</p>
+<p>(1) User 就是账号+密码，一般公司给的账号会需要安装手机软件，每次登陆时需要输入验证码（MFA 认证）。</p>
+<p>(2) Role，这个是用来给一些程序配置用的，比如aws cli， cloudwatch exporter，datadog等。</p>
+<p>一般个人用户给的是User用户，User类型用户应为每次登陆需要输入验证码，所以无法直接配置aws cli。如果已有一个User账户，想用这个账户配置aws cli的认证，可以按照官方的教程来：<br><a href="https://aws.amazon.com/cn/premiumsupport/knowledge-center/authenticate-mfa-cli/" target="_blank" rel="external">https://aws.amazon.com/cn/premiumsupport/knowledge-center/authenticate-mfa-cli/</a></p>
+<p>步骤以及需要注意的地方如下：</p>
+<ol>
+<li>在AWS网页-&gt;IAM-&gt;Users-&gt;自己的账户，在Security credentials下面创建一个access key。</li>
+<li>配置aws cli的key id 和 secret key, 这里记得一定要把token设置为空。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">aws configure <span class="built_in">set</span> aws_access_key_id <span class="string">"上面创建的key id"</span></div><div class="line">aws configure <span class="built_in">set</span> aws_secret_access_key <span class="string">"上面创建的secret key"</span></div><div class="line">aws configure <span class="built_in">set</span> aws_session_token <span class="string">""</span></div></pre></td></tr></table></figure>
+<p>执行完这几行后，再按照官方的介绍，执行下面的指令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">aws sts get-session-token --serial-number arn-of-the-mfa-device --token-code code-from-token</div></pre></td></tr></table></figure>
+<p>这个时候就可以得到对应的key id, secret key 和 token,用上面的方法配置这3个参数后，就可以用aws cli对aws对象进行操作了。这里，因为用这种方法每次创建的认证key只有差不多1天不到的有效期，所以只用来测试用，而且经常需要重新配置，在获取新的key时，记得需要执行配置aws_session_token的指令把这一项清空，否则会导致无法获取新的key。</p>
+<h1 id="二、AWS-SDK"><a href="#二、AWS-SDK" class="headerlink" title="二、AWS SDK"></a>二、AWS SDK</h1><p>为了方便编写自动化脚本，AWS提供了很多SDK，支持目前用到的大多数语言，可以从官方看具体的SDK细节：<br><a href="https://aws.amazon.com/cn/tools/" target="_blank" rel="external">https://aws.amazon.com/cn/tools/</a></p>
+<p>支持的列表有：</p>
+<ul>
+<li>Java</li>
+<li>.NET</li>
+<li>Node.js</li>
+<li>PHP</li>
+<li>Python</li>
+<li>Ruby</li>
+<li>浏览器</li>
+<li>golang</li>
+<li>C++</li>
+<li>Android</li>
+<li>IOS</li>
+<li>React Native</li>
+<li>移动Web</li>
+</ul>
+<p>SDK的功能和AWS CLI基本一样，集成更方便，具体可以在官方上看官方文档。 </p>
+<h1 id="三、CloudFormation"><a href="#三、CloudFormation" class="headerlink" title="三、CloudFormation"></a>三、CloudFormation</h1><p>官方文档：<a href="https://aws.amazon.com/cn/cloudformation/" target="_blank" rel="external">https://aws.amazon.com/cn/cloudformation/</a></p>
+<p>CloudFormation是AWS提供的一种通过配置文件来管理AWS资源的一种方法。<br>CloudFormation的配置文件采用json或YAML格式，你可以将你需要创建的一组AWS对象编写在一个CloudFormation配置文件里，比如你的一个服务需要创建几台EC2，并创建对应的Security Group, ELB, CNAME, 你可以将所有资源以及它们之间的关联按照要求的格式，编写在一个CloudFormation文件里，然后在AWS页面里或者用aws cli等方式创建这个CloudFormation，就可以一次创建所有你需要的一套对象。</p>
+<p>通过看文档和使用，总结下来CloudFormation有一些优势和局限：</p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p>官方的描述：</p>
+<h3 id="1-全面建模"><a href="#1-全面建模" class="headerlink" title="(1) 全面建模"></a>(1) 全面建模</h3><p>AWS CloudFormation 使您可以在文本文件中为整个基础设施建模。此模板会成为您的基础设施的单一信任源。这有助于您将组织中使用的基础设施组件标准化，从而实现配置合规性并加快故障排除速度。</p>
+<h3 id="2-自动化和部署"><a href="#2-自动化和部署" class="headerlink" title="(2) 自动化和部署"></a>(2) 自动化和部署</h3><p>AWS CloudFormation 以安全、可重复的方式预配置您的资源，使您可以构建和重新构建您的基础设施和应用程序，而不必执行手动操作或编写自定义脚本。CloudFormation 负责确定管理堆栈时要执行的适当操作，并在检测到错误时自动会滚更改。</p>
+<h3 id="3-仅仅就是代码"><a href="#3-仅仅就是代码" class="headerlink" title="(3) 仅仅就是代码"></a>(3) 仅仅就是代码</h3><p>通过编纂基础设施，您可以将您的基础设施仅仅视为代码。您可以使用任何代码编辑器对它进行创作，将它签入版本控制系统中，与团队成员一起查看文件，然后将其部署到生产环境中。</p>
+<h2 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h2><p>最新通过使用CloudFormation总结发现，你可以创建、更新、删除你定义的一组资源，但是CloudFormation有个限制就是你只能对用CloudFormation创建的对象进行更新和操作，不能对已有的手动创建的对象进行操作。</p>
+<p>比如你手动在AWS页面上创建了一个EC2，你是不能通过编写CloudFormation文件来对这个EC2的熟悉或配置进行修改的，如果你想修改这个EC2的熟悉，你只能在用在网页上或者aws cli等这些方法进行。典型的案例就是如果你用kops在aws上创建了一个k8s cluster，你是没办法通过CloudFormation来对kops创建的资源进行修改的。</p>
+<h2 id="教程资料"><a href="#教程资料" class="headerlink" title="教程资料"></a>教程资料</h2><p>官方教程: <a href="https://aws.amazon.com/cn/cloudformation/getting-started/" target="_blank" rel="external">https://aws.amazon.com/cn/cloudformation/getting-started/</a></p>
+<p>一般创建资源都是参照官方模板来写，官方所有模板： <a href="http://docs.amazonaws.cn/AWSCloudFormation/latest/UserGuide/template-reference.html" target="_blank" rel="external">http://docs.amazonaws.cn/AWSCloudFormation/latest/UserGuide/template-reference.html</a></p>
+<p>下面是一些技巧：<br>比如，你在给一个EC2配置security group列表时，想一部分SG应用你CloudFormation里创建的，一部分SG id是用户输入的，下面的例子显示了如果在一个EC2里把两部分SG组合在一个：<br><a href="https://gist.github.com/magnetikonline/a6cfc522a1e9f876b75962f5f553c8e5" target="_blank" rel="external">https://gist.github.com/magnetikonline/a6cfc522a1e9f876b75962f5f553c8e5</a></p>
+<p>另外的一些配置技巧参考：<br><a href="http://garbe.io/blog/2017/07/17/cloudformation-hacks/" target="_blank" rel="external">http://garbe.io/blog/2017/07/17/cloudformation-hacks/</a></p>
+<h1 id="四、-CloudFormer"><a href="#四、-CloudFormer" class="headerlink" title="四、 CloudFormer"></a>四、 CloudFormer</h1><p>官方文档：<a href="https://docs.aws.amazon.com/zh_cn/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html" target="_blank" rel="external">https://docs.aws.amazon.com/zh_cn/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html</a></p>
+<p>CloudFormer是AWS提供的一个工具，它能够把你AWS里面已有的资源导出成CloudFormation模板。这个我没有用到，所以详细信息可以参考官方文档。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://qwertwwwe.github.io/undefined/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="rg">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/meiqiu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qwertwwwe">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/undefined/" itemprop="url">vim-spf13</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
             
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-11T21:51:14+08:00">
+                2018-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="spf13-vim"><a href="#spf13-vim" class="headerlink" title="spf13-vim"></a>spf13-vim</h1><p>官方链接：<a href="https://github.com/spf13/spf13-vim" target="_blank" rel="external">https://github.com/spf13/spf13-vim</a><br>spf13-vim是一个vim插件配置的集合，整个安装包包含了非常多的插件以及相关配置，具体的安装直接按照官网的教程就行。<br>系统：macos</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://j.mp/spf13-vim3 -L &gt; spf13-vim.sh &amp;&amp; sh spf13-vim.sh</div></pre></td></tr></table></figure>
+<h1 id="自定义的配置和插件"><a href="#自定义的配置和插件" class="headerlink" title="自定义的配置和插件"></a>自定义的配置和插件</h1><p>按照官方的说明，自定义的配置写在 ~/.vimrc.local中，如果想添加或者删除插件，也是在这个文件中配置。我觉得spf13-vim中的插件也太多了，想卸掉一些不用的，spf13-vim中用bundle管理插件，<br>比如要卸载AutoClose, 在~/.vimrc.local中添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Unbundle &apos;AutoClose&apos;</div></pre></td></tr></table></figure>
+<p>然后在vim中执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:BundleClean!</div></pre></td></tr></table></figure>
+<h1 id="spf13-vim中的主要插件列表"><a href="#spf13-vim中的主要插件列表" class="headerlink" title="spf13-vim中的主要插件列表"></a>spf13-vim中的主要插件列表</h1><p>spf13-vim中的插件感觉好多，这里具体列一些主要的，然后根据自己需求定制化一下~</p>
+<h2 id="scrooloose-nerdtree"><a href="#scrooloose-nerdtree" class="headerlink" title="scrooloose/nerdtree"></a>scrooloose/nerdtree</h2><p>官方链接：<a href="https://github.com/scrooloose/nerdtree" target="_blank" rel="external">https://github.com/scrooloose/nerdtree</a></p>
+<p>这个插件是一个文件浏览插件，效果直接上官方图：<br><img src="/undefined/vim-spf13/nerdtree.png" alt=""></p>
+<p>spf13-vim中对该插件定义了快捷键，按ctrl+e打开，然后输入?可以查看帮助文档，具体常用快捷键如下：</p>
+<ul>
+<li>ctrl+e : 打开/关闭插件</li>
+<li>o : 在当前窗口打开文件</li>
+<li>t : 在新窗口打开文件</li>
+<li>i : open split (垂直分屏打开)</li>
+<li>s : open vsplit (横向分屏打开)</li>
+</ul>
+<h2 id="tpope-vim-surround"><a href="#tpope-vim-surround" class="headerlink" title="tpope/vim-surround"></a>tpope/vim-surround</h2><p>官方链接：<a href="https://github.com/tpope/vim-surround" target="_blank" rel="external">https://github.com/tpope/vim-surround</a></p>
+<p>这个插件是用于方便对括号/引号/XML tag等成对出现的符号进行编辑，例如将”hello”改成’hello’，具体执行方法是在普通模式下快速输入cs，然后输入”‘就会将””替换成’’。</p>
+<p>常用快捷键：</p>
+<ul>
+<li>cs : 替换，例如cs”‘，将”替换成’</li>
+<li>ds : 删除，例如ds”</li>
+<li>ysiw : 添加，例如ysiw]</li>
+</ul>
+<h2 id="rhysd-conflict-marker-vim"><a href="#rhysd-conflict-marker-vim" class="headerlink" title="rhysd/conflict-marker.vim"></a>rhysd/conflict-marker.vim</h2><p>官方链接：<a href="https://github.com/rhysd/conflict-marker.vim" target="_blank" rel="external">https://github.com/rhysd/conflict-marker.vim</a></p>
+<p>主要用来方便处理例如git文件合并时的冲突</p>
+
           
         
       
@@ -1535,7 +1725,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

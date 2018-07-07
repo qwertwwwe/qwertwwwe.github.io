@@ -1,0 +1,814 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="1lx6lylo1eoYGipgLskWpjx25F20JXR3fL26uNyZ_cM" />
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="3uZay8SxDH88uGn1" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux, network," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在使用AWS的过程中，需要用到很多AWS提供的工具，以完成相关的AWS部署、配置和更新等操作，这里总结一下最近用到的一些AWS提供的工具。
+一、AWS CLI1.1 基本功能介绍官方链接：https://aws.amazon.com/cn/cli/
+AWS CLI是AWS官方提供的命令行工具，安装方法： pip install awscli
+功能aws cli提供基本所有操作，所有可以在界面进行的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aws-tools">
+<meta property="og:url" content="https://qwertwwwe.github.io/aws-tools/index.html">
+<meta property="og:site_name" content="qwertwwwe">
+<meta property="og:description" content="在使用AWS的过程中，需要用到很多AWS提供的工具，以完成相关的AWS部署、配置和更新等操作，这里总结一下最近用到的一些AWS提供的工具。
+一、AWS CLI1.1 基本功能介绍官方链接：https://aws.amazon.com/cn/cli/
+AWS CLI是AWS官方提供的命令行工具，安装方法： pip install awscli
+功能aws cli提供基本所有操作，所有可以在界面进行的">
+<meta property="og:updated_time" content="2018-07-07T14:06:57.370Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aws-tools">
+<meta name="twitter:description" content="在使用AWS的过程中，需要用到很多AWS提供的工具，以完成相关的AWS部署、配置和更新等操作，这里总结一下最近用到的一些AWS提供的工具。
+一、AWS CLI1.1 基本功能介绍官方链接：https://aws.amazon.com/cn/cli/
+AWS CLI是AWS官方提供的命令行工具，安装方法： pip install awscli
+功能aws cli提供基本所有操作，所有可以在界面进行的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://qwertwwwe.github.io/aws-tools/"/>
+
+
+
+
+
+  <title>aws-tools | qwertwwwe</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?bcbaa984b5bd501cef6054c7b2172803";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">qwertwwwe</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://qwertwwwe.github.io/aws-tools/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="rg">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/meiqiu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qwertwwwe">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">aws-tools</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-05T00:13:19+08:00">
+                2018-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cloud/" itemprop="url" rel="index">
+                    <span itemprop="name">cloud</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在使用AWS的过程中，需要用到很多AWS提供的工具，以完成相关的AWS部署、配置和更新等操作，这里总结一下最近用到的一些AWS提供的工具。</p>
+<h1 id="一、AWS-CLI"><a href="#一、AWS-CLI" class="headerlink" title="一、AWS CLI"></a>一、AWS CLI</h1><h2 id="1-1-基本功能介绍"><a href="#1-1-基本功能介绍" class="headerlink" title="1.1 基本功能介绍"></a>1.1 基本功能介绍</h2><p>官方链接：<br><a href="https://aws.amazon.com/cn/cli" target="_blank" rel="external">https://aws.amazon.com/cn/cli/</a></p>
+<p>AWS CLI是AWS官方提供的命令行工具，<br>安装方法： pip install awscli</p>
+<h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><p>aws cli提供基本所有操作，所有可以在界面进行的操作，使用aws cli命令都可以进行相应的操作，所以这个对于需要用脚本自动化一些操作非常有用。</p>
+<h3 id="局限"><a href="#局限" class="headerlink" title="局限"></a>局限</h3><p>感觉上aws cli应该是针对AWS操作功能最完善的了吧，目前没发现什么局限性。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>具体使用方法可以看 aws help，或者看官网，感觉使用起来比较简单。</p>
+<h2 id="1-2-使用的一些记录"><a href="#1-2-使用的一些记录" class="headerlink" title="1.2 使用的一些记录"></a>1.2 使用的一些记录</h2><h3 id="aws-cli账户配置"><a href="#aws-cli账户配置" class="headerlink" title="aws cli账户配置"></a>aws cli账户配置</h3><p>AWS上账户和权限管理分了很多类，对于账户来说，常见的有User和Role这2类：</p>
+<p>(1) User 就是账号+密码，一般公司给的账号会需要安装手机软件，每次登陆时需要输入验证码（MFA 认证）。</p>
+<p>(2) Role，这个是用来给一些程序配置用的，比如aws cli， cloudwatch exporter，datadog等。</p>
+<p>一般个人用户给的是User用户，User类型用户应为每次登陆需要输入验证码，所以无法直接配置aws cli。如果已有一个User账户，想用这个账户配置aws cli的认证，可以按照官方的教程来：<br><a href="https://aws.amazon.com/cn/premiumsupport/knowledge-center/authenticate-mfa-cli/" target="_blank" rel="external">https://aws.amazon.com/cn/premiumsupport/knowledge-center/authenticate-mfa-cli/</a></p>
+<p>步骤以及需要注意的地方如下：</p>
+<ol>
+<li>在AWS网页-&gt;IAM-&gt;Users-&gt;自己的账户，在Security credentials下面创建一个access key。</li>
+<li>配置aws cli的key id 和 secret key, 这里记得一定要把token设置为空。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">aws configure <span class="built_in">set</span> aws_access_key_id <span class="string">"上面创建的key id"</span></div><div class="line">aws configure <span class="built_in">set</span> aws_secret_access_key <span class="string">"上面创建的secret key"</span></div><div class="line">aws configure <span class="built_in">set</span> aws_session_token <span class="string">""</span></div></pre></td></tr></table></figure>
+<p>执行完这几行后，再按照官方的介绍，执行下面的指令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">aws sts get-session-token --serial-number arn-of-the-mfa-device --token-code code-from-token</div></pre></td></tr></table></figure>
+<p>这个时候就可以得到对应的key id, secret key 和 token,用上面的方法配置这3个参数后，就可以用aws cli对aws对象进行操作了。这里，因为用这种方法每次创建的认证key只有差不多1天不到的有效期，所以只用来测试用，而且经常需要重新配置，在获取新的key时，记得需要执行配置aws_session_token的指令把这一项清空，否则会导致无法获取新的key。</p>
+<h1 id="二、AWS-SDK"><a href="#二、AWS-SDK" class="headerlink" title="二、AWS SDK"></a>二、AWS SDK</h1><p>为了方便编写自动化脚本，AWS提供了很多SDK，支持目前用到的大多数语言，可以从官方看具体的SDK细节：<br><a href="https://aws.amazon.com/cn/tools/" target="_blank" rel="external">https://aws.amazon.com/cn/tools/</a></p>
+<p>支持的列表有：</p>
+<ul>
+<li>Java</li>
+<li>.NET</li>
+<li>Node.js</li>
+<li>PHP</li>
+<li>Python</li>
+<li>Ruby</li>
+<li>浏览器</li>
+<li>golang</li>
+<li>C++</li>
+<li>Android</li>
+<li>IOS</li>
+<li>React Native</li>
+<li>移动Web</li>
+</ul>
+<p>SDK的功能和AWS CLI基本一样，集成更方便，具体可以在官方上看官方文档。 </p>
+<h1 id="三、CloudFormation"><a href="#三、CloudFormation" class="headerlink" title="三、CloudFormation"></a>三、CloudFormation</h1><p>官方文档：<a href="https://aws.amazon.com/cn/cloudformation/" target="_blank" rel="external">https://aws.amazon.com/cn/cloudformation/</a></p>
+<p>CloudFormation是AWS提供的一种通过配置文件来管理AWS资源的一种方法。<br>CloudFormation的配置文件采用json或YAML格式，你可以将你需要创建的一组AWS对象编写在一个CloudFormation配置文件里，比如你的一个服务需要创建几台EC2，并创建对应的Security Group, ELB, CNAME, 你可以将所有资源以及它们之间的关联按照要求的格式，编写在一个CloudFormation文件里，然后在AWS页面里或者用aws cli等方式创建这个CloudFormation，就可以一次创建所有你需要的一套对象。</p>
+<p>通过看文档和使用，总结下来CloudFormation有一些优势和局限：</p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p>官方的描述：</p>
+<h3 id="1-全面建模"><a href="#1-全面建模" class="headerlink" title="(1) 全面建模"></a>(1) 全面建模</h3><p>AWS CloudFormation 使您可以在文本文件中为整个基础设施建模。此模板会成为您的基础设施的单一信任源。这有助于您将组织中使用的基础设施组件标准化，从而实现配置合规性并加快故障排除速度。</p>
+<h3 id="2-自动化和部署"><a href="#2-自动化和部署" class="headerlink" title="(2) 自动化和部署"></a>(2) 自动化和部署</h3><p>AWS CloudFormation 以安全、可重复的方式预配置您的资源，使您可以构建和重新构建您的基础设施和应用程序，而不必执行手动操作或编写自定义脚本。CloudFormation 负责确定管理堆栈时要执行的适当操作，并在检测到错误时自动会滚更改。</p>
+<h3 id="3-仅仅就是代码"><a href="#3-仅仅就是代码" class="headerlink" title="(3) 仅仅就是代码"></a>(3) 仅仅就是代码</h3><p>通过编纂基础设施，您可以将您的基础设施仅仅视为代码。您可以使用任何代码编辑器对它进行创作，将它签入版本控制系统中，与团队成员一起查看文件，然后将其部署到生产环境中。</p>
+<h2 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h2><p>最新通过使用CloudFormation总结发现，你可以创建、更新、删除你定义的一组资源，但是CloudFormation有个限制就是你只能对用CloudFormation创建的对象进行更新和操作，不能对已有的手动创建的对象进行操作。</p>
+<p>比如你手动在AWS页面上创建了一个EC2，你是不能通过编写CloudFormation文件来对这个EC2的熟悉或配置进行修改的，如果你想修改这个EC2的熟悉，你只能在用在网页上或者aws cli等这些方法进行。典型的案例就是如果你用kops在aws上创建了一个k8s cluster，你是没办法通过CloudFormation来对kops创建的资源进行修改的。</p>
+<h2 id="教程资料"><a href="#教程资料" class="headerlink" title="教程资料"></a>教程资料</h2><p>官方教程: <a href="https://aws.amazon.com/cn/cloudformation/getting-started/" target="_blank" rel="external">https://aws.amazon.com/cn/cloudformation/getting-started/</a></p>
+<p>一般创建资源都是参照官方模板来写，官方所有模板： <a href="http://docs.amazonaws.cn/AWSCloudFormation/latest/UserGuide/template-reference.html" target="_blank" rel="external">http://docs.amazonaws.cn/AWSCloudFormation/latest/UserGuide/template-reference.html</a></p>
+<p>下面是一些技巧：<br>比如，你在给一个EC2配置security group列表时，想一部分SG应用你CloudFormation里创建的，一部分SG id是用户输入的，下面的例子显示了如果在一个EC2里把两部分SG组合在一个：<br><a href="https://gist.github.com/magnetikonline/a6cfc522a1e9f876b75962f5f553c8e5" target="_blank" rel="external">https://gist.github.com/magnetikonline/a6cfc522a1e9f876b75962f5f553c8e5</a></p>
+<p>另外的一些配置技巧参考：<br><a href="http://garbe.io/blog/2017/07/17/cloudformation-hacks/" target="_blank" rel="external">http://garbe.io/blog/2017/07/17/cloudformation-hacks/</a></p>
+<h1 id="四、-CloudFormer"><a href="#四、-CloudFormer" class="headerlink" title="四、 CloudFormer"></a>四、 CloudFormer</h1><p>官方文档：<a href="https://docs.aws.amazon.com/zh_cn/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html" target="_blank" rel="external">https://docs.aws.amazon.com/zh_cn/AWSCloudFormation/latest/UserGuide/cfn-using-cloudformer.html</a></p>
+<p>CloudFormer是AWS提供的一个工具，它能够把你AWS里面已有的资源导出成CloudFormation模板。这个我没有用到，所以详细信息可以参考官方文档。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux-network/" rel="tag"># Linux, network</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/undefined/" rel="next" title="vim-spf13">
+                <i class="fa fa-chevron-left"></i> vim-spf13
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTcyNy82Mjk0"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/meiqiu.jpg"
+               alt="rg" />
+          <p class="site-author-name" itemprop="name">rg</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、AWS-CLI"><span class="nav-number">1.</span> <span class="nav-text">一、AWS CLI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-基本功能介绍"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 基本功能介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#功能"><span class="nav-number">1.1.1.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#局限"><span class="nav-number">1.1.2.</span> <span class="nav-text">局限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.1.3.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-使用的一些记录"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 使用的一些记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#aws-cli账户配置"><span class="nav-number">1.2.1.</span> <span class="nav-text">aws cli账户配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、AWS-SDK"><span class="nav-number">2.</span> <span class="nav-text">二、AWS SDK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、CloudFormation"><span class="nav-number">3.</span> <span class="nav-text">三、CloudFormation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优势"><span class="nav-number">3.1.</span> <span class="nav-text">优势</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-全面建模"><span class="nav-number">3.1.1.</span> <span class="nav-text">(1) 全面建模</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-自动化和部署"><span class="nav-number">3.1.2.</span> <span class="nav-text">(2) 自动化和部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-仅仅就是代码"><span class="nav-number">3.1.3.</span> <span class="nav-text">(3) 仅仅就是代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限制"><span class="nav-number">3.2.</span> <span class="nav-text">限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#教程资料"><span class="nav-number">3.3.</span> <span class="nav-text">教程资料</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、-CloudFormer"><span class="nav-number">4.</span> <span class="nav-text">四、 CloudFormer</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rg</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

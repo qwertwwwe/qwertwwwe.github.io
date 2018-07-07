@@ -4,6 +4,41 @@
 
     
   <url>
+    <loc>https://qwertwwwe.github.io/aws-tools/</loc>
+    <lastmod>2018-07-07T14:06:57.370Z</lastmod>
+    <data>
+        <display>
+        <title>aws-tools</title>
+        <pubTime>2018-07-04T16:13:19.000Z</pubTime>
+        
+        <tag>Linux, network</tag>
+         
+         
+           
+             
+              <breadCrumb title="cloud" url="https://qwertwwwe.github.io/categories/cloud/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://qwertwwwe.github.io/undefined/</loc>
+    <lastmod>2018-06-11T15:21:32.502Z</lastmod>
+    <data>
+        <display>
+        <title>vim-spf13</title>
+        <pubTime>2018-06-11T13:51:14.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://qwertwwwe.github.io/windows-read-registers/</loc>
     <lastmod>2018-06-06T14:26:18.611Z</lastmod>
     <data>
@@ -69,24 +104,6 @@
            
              
               <breadCrumb title="windows" url="https://qwertwwwe.github.io/categories/windows/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://qwertwwwe.github.io/prometheus-monitor-kubernetes/</loc>
-    <lastmod>2018-06-06T14:21:47.232Z</lastmod>
-    <data>
-        <display>
-        <title>利用prometheus监控kubernetes集群</title>
-        <pubTime>2018-05-30T03:58:32.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="monitor" url="https://qwertwwwe.github.io/categories/monitor/"/>
           
         </display>
     </data>
