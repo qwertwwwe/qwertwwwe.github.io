@@ -105,14 +105,14 @@
 <meta property="og:site_name" content="qwertwwwe">
 <meta property="og:description" content="微软从Vista开始64位系统加载内核驱动要强制签名，虽然可以重启关闭相关选项，但是还是会出现很多问题，这里我自己测试驱动程序，目前也不想买证书，因此就尝试自己创建一个测试的签名，用来测试自己开发的驱动用。
 参考链接：https://www.mobibrw.com/2014/1404">
-<meta property="og:image" content="https://qwertwwwe.github.io/windows-driver-test-certificate-signature/Windows驱动开发-测试证书签名/cmdforvs.jpg">
-<meta property="og:image" content="https://qwertwwwe.github.io/windows-driver-test-certificate-signature/Windows驱动开发-测试证书签名/testmark.png">
-<meta property="og:updated_time" content="2018-06-06T14:25:09.814Z">
+<meta property="og:image" content="https://qwertwwwe.github.io/windows-driver-test-certificate-signature/cmdforvs.jpg">
+<meta property="og:image" content="https://qwertwwwe.github.io/windows-driver-test-certificate-signature/testmark.png">
+<meta property="og:updated_time" content="2018-08-09T15:22:44.969Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows驱动开发--测试证书签名">
 <meta name="twitter:description" content="微软从Vista开始64位系统加载内核驱动要强制签名，虽然可以重启关闭相关选项，但是还是会出现很多问题，这里我自己测试驱动程序，目前也不想买证书，因此就尝试自己创建一个测试的签名，用来测试自己开发的驱动用。
 参考链接：https://www.mobibrw.com/2014/1404">
-<meta name="twitter:image" content="https://qwertwwwe.github.io/windows-driver-test-certificate-signature/Windows驱动开发-测试证书签名/cmdforvs.jpg">
+<meta name="twitter:image" content="https://qwertwwwe.github.io/windows-driver-test-certificate-signature/cmdforvs.jpg">
 
 
 
@@ -378,10 +378,10 @@
 <p>由于需要用到一些命令工具，因此需要先安装这些工具，主要包含：<br>MakeCert, CertMgr, Signtool这3个程序。</p>
 <p>我在搭环境时，直接在测试机上安装了一个VS 2017（版本无所谓，别太旧就行）， vs里是包含这些工具的，在安装VS时选择C++开发的工具包就行。</p>
 <p>其他方式，Plateform SDK, .netFramework SDK里面也都有这些工具。</p>
-<h1 id="二、生成自己的证书并对驱动程序进行签名"><a href="#二、生成自己的证书并对驱动程序进行签名" class="headerlink" title="二、生成自己的证书并对驱动程序进行签名"></a>二、生成自己的证书并对驱动程序进行签名</h1><p>在完成上述安装后，用admin权限打开Developer Command Prompt for VS 2017.<br><img src="/windows-driver-test-certificate-signature/Windows驱动开发-测试证书签名/cmdforvs.jpg" alt=""></p>
+<h1 id="二、生成自己的证书并对驱动程序进行签名"><a href="#二、生成自己的证书并对驱动程序进行签名" class="headerlink" title="二、生成自己的证书并对驱动程序进行签名"></a>二、生成自己的证书并对驱动程序进行签名</h1><p>在完成上述安装后，用admin权限打开Developer Command Prompt for VS 2017.<br><img src="/windows-driver-test-certificate-signature/cmdforvs.jpg" alt="cmdforvs.jpg" title=""></p>
 <p>1.打开系统的testsigning模式，使得非权威CA发放的签名可以使用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bcdedit /<span class="built_in">set</span> testsigning on</div></pre></td></tr></table></figure>
-<p>成功后在桌面右下角可见测试标签：<br><img src="/windows-driver-test-certificate-signature/Windows驱动开发-测试证书签名/testmark.png" alt=""><br>没有的话重启一些看看。</p>
+<p>成功后在桌面右下角可见测试标签：<br><img src="/windows-driver-test-certificate-signature/testmark.png" alt="testmark.png" title=""><br>没有的话重启一些看看。</p>
 <p>2.做一个签名证书出来。</p>
 <p>先进入D盘，或者任意目录都行，默认也行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">MakeCert –r –pe –ss PrivateCertStore –n CN=www.rg.com(<span class="built_in">test</span>) rg.cer</div></pre></td></tr></table></figure>
